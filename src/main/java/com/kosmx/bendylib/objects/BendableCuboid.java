@@ -66,7 +66,7 @@ public class BendableCuboid implements ICuboid {
         this.fixX = fixX;
         this.fixY = fixY;
         this.fixZ = fixZ;
-        this.matrix.multiply(direction.getRotationQuaternion()); //Rotate it?
+        //this.matrix.multiply(direction.getRotationQuaternion()); //Rotate it?
         this.minX = x;
         this.minY = y;
         this.minZ = z;
@@ -75,6 +75,14 @@ public class BendableCuboid implements ICuboid {
         this.maxZ = z + sizeZ;
         this.size = direction.getAxis() == Direction.Axis.X ? sizeX + 2*extraX : direction.getAxis() == Direction.Axis.Y ? sizeY + 2*extraY: sizeZ + 2*extraZ;
         this.moveVec = new Vector3f(0, size/2, 0);
+        switch (direction){
+            case DOWN:
+                matrix.multiply(Matrix4f.translate(0, size * 2, 0));
+                matrix.multiply(Matrix4f.scale(1, -1, 1));
+                break;
+            default:
+                matrix.multiply(direction.getRotationQuaternion());
+        }
         float f = x + sizeX;
         float g = y + sizeY;
         float h = z + sizeZ;
@@ -148,16 +156,28 @@ public class BendableCuboid implements ICuboid {
                 iVertices[1] = new Vertex(origins[1], 0, 0);
                 iVertices[2] = new Vertex(origins[2], 0, 0);
                 iVertices[3] = new Vertex(origins[3], 0, 0);
-                this.sides[0] = new Quad(new IVertex[]{iVertices[1], iVertices[0], iVertices[3], iVertices[2]}, l, q, m, p, textureWidth, textureHeight, mirror);
-                this.sides[1] = new Quad(new IVertex[]{repVertices[6], repVertices[7], repVertices[4], repVertices[5]}, k, p, l, q, textureWidth, textureHeight, mirror);
-                this.sides[2] = new Quad(new IVertex[]{repVertices[4], repVertices[7], repVertices[3], repVertices[0]}, j, q, k, (q + r)/2, textureWidth, textureHeight, mirror);
-                this.sides[3] = new Quad(new IVertex[]{repVertices[0], repVertices[3], iVertices[3], iVertices[0]}, j, (q + r)/2, k, r, textureWidth, textureHeight, mirror);
-                this.sides[4] = new Quad(new IVertex[]{repVertices[5], repVertices[4], repVertices[0], repVertices[1]}, k, q, l, (q + r)/2, textureWidth, textureHeight, mirror);
-                this.sides[5] = new Quad(new IVertex[]{repVertices[1], repVertices[0], iVertices[0], iVertices[1]}, k, (q + r)/2, l, r, textureWidth, textureHeight, mirror);
-                this.sides[6] = new Quad(new IVertex[]{repVertices[6], repVertices[5], repVertices[1], repVertices[2]}, l, q, n, (q + r)/2, textureWidth, textureHeight, mirror);
-                this.sides[7] = new Quad(new IVertex[]{repVertices[2], repVertices[1], iVertices[1], iVertices[2]}, l, (q + r)/2, n, r, textureWidth, textureHeight, mirror);
-                this.sides[8] = new Quad(new IVertex[]{repVertices[7], repVertices[6], repVertices[2], repVertices[3]}, n, q, o, (q + r)/2, textureWidth, textureHeight, mirror);
-                this.sides[9] = new Quad(new IVertex[]{repVertices[3], repVertices[2], iVertices[2], iVertices[3]}, n, (q + r)/2, o, r, textureWidth, textureHeight, mirror);
+                swap[0] = iVertices[0];
+                swap[1] = iVertices[1];
+                swap[2] = iVertices[2];
+                swap[3] = iVertices[3];
+                iVertices[0] = repVertices[4];
+                iVertices[1] = repVertices[5];
+                iVertices[2] = repVertices[6];
+                iVertices[3] = repVertices[7];
+                repVertices[4] = swap[0];
+                repVertices[5] = swap[1];
+                repVertices[6] = swap[2];
+                repVertices[7] = swap[3];
+                this.sides[0] = new Quad(new IVertex[]{iVertices[2], iVertices[3], iVertices[0], iVertices[1]}, k, p, l, q, textureWidth, textureHeight, mirror);
+                this.sides[1] = new Quad(new IVertex[]{repVertices[5], repVertices[4], repVertices[7], repVertices[6]}, l, q, m, p, textureWidth, textureHeight, mirror);
+                this.sides[2] = new Quad(new IVertex[]{iVertices[0], iVertices[3], repVertices[3], repVertices[0]}, j, q, k, (q + r)/2, textureWidth, textureHeight, mirror);
+                this.sides[3] = new Quad(new IVertex[]{repVertices[0], repVertices[3], repVertices[7], repVertices[4]}, j, (q + r)/2, k, r, textureWidth, textureHeight, mirror);
+                this.sides[4] = new Quad(new IVertex[]{iVertices[1], iVertices[0], repVertices[0], repVertices[1]}, k, q, l, (q + r)/2, textureWidth, textureHeight, mirror);
+                this.sides[5] = new Quad(new IVertex[]{repVertices[1], repVertices[0], repVertices[4], repVertices[5]}, k, (q + r)/2, l, r, textureWidth, textureHeight, mirror);
+                this.sides[6] = new Quad(new IVertex[]{iVertices[2], iVertices[1], repVertices[1], repVertices[2]}, l, q, n, (q + r)/2, textureWidth, textureHeight, mirror);
+                this.sides[7] = new Quad(new IVertex[]{repVertices[2], repVertices[1], repVertices[5], repVertices[6]}, l, (q + r)/2, n, r, textureWidth, textureHeight, mirror);
+                this.sides[8] = new Quad(new IVertex[]{iVertices[3], iVertices[2], repVertices[2], repVertices[3]}, n, q, o, (q + r)/2, textureWidth, textureHeight, mirror);
+                this.sides[9] = new Quad(new IVertex[]{repVertices[3], repVertices[2], repVertices[6], repVertices[7]}, n, (q + r)/2, o, r, textureWidth, textureHeight, mirror);
                 break;
             case EAST:
                 origins[0] = new Vector3f(x, y, z);

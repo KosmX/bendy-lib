@@ -32,7 +32,7 @@ public class Matrix4 extends Matrix4f {
         Matrix4f matrix4f = this.copy();
 
         float f = this.determinantAndAdjugate();
-        if (Math.abs(f) > 1.0E-6F) {
+        if (Math.abs(f) > 1.0E-3F) {
             this.multiply(1/f);
         }
         else {

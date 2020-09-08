@@ -2,7 +2,6 @@ package com.kosmx.bendylib;
 
 import com.kosmx.bendylib.objects.BendableCuboid;
 import com.kosmx.bendylib.objects.ICuboid;
-import com.mojang.datafixers.kinds.IdF;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectList;
 import net.minecraft.client.model.Model;
@@ -10,8 +9,6 @@ import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Direction;
-import org.spongepowered.asm.mixin.injection.Inject;
-
 import javax.annotation.Nullable;
 
 /**
@@ -54,16 +51,6 @@ public abstract class MutableModelPart extends ModelPart {
 
      *///TODO don't cause crash
 
-
-    /**
-     * To give it a name, use comments!
-     * @return this
-     */
-    /*public MutableModelPart addBendableCuboid(float x, float y, float z, int sizeX, int sizeY, int sizeZ, float extra){
-        
-    }
-
-     */
 
 
     @Override
@@ -165,23 +152,66 @@ public abstract class MutableModelPart extends ModelPart {
 
 
     //The Bendable cuboid generator code
-    public ModelPart addCuboid(float x, float y, float z, int sizeX, int sizeY, int sizeZ, float extraX, float extraY, float extraZ, Direction direction, float fixX, float fixY, float fixZ){
-        this.iCuboids.add(new BendableCuboid(this.textureOffsetU, this.textureOffsetV, x, y, z, sizeX, sizeY, sizeZ, false, this.textureWidth, this.textureHeight, direction, fixX, fixY, fixZ, extraX, extraY, extraZ));
+    public BendableCuboid createCuboid(float x, float y, float z, int sizeX, int sizeY, int sizeZ, float extraX, float extraY, float extraZ, Direction direction, float fixX, float fixY, float fixZ){
+        return new BendableCuboid(this.textureOffsetU, this.textureOffsetV, x, y, z, sizeX, sizeY, sizeZ, false, this.textureWidth, this.textureHeight, direction, fixX, fixY, fixZ, extraX, extraY, extraZ);
+    }
+    public MutableModelPart addCuboid(float x, float y, float z, int sizeX, int sizeY, int sizeZ, float extraX, float extraY, float extraZ, Direction direction, float fixX, float fixY, float fixZ){
+        BendableCuboid cuboid = new BendableCuboid(this.textureOffsetU, this.textureOffsetV, x, y, z, sizeX, sizeY, sizeZ, false, this.textureWidth, this.textureHeight, direction, fixX, fixY, fixZ, extraX, extraY, extraZ);
+        this.iCuboids.add(cuboid);
         return this;
     }
 
-    public ModelPart addCuboid(float x, float y, float z, int sizeX, int sizeY, int sizeZ, float extraX, float extraY, float extraZ, Direction direction){
+    public BendableCuboid createCuboid(float x, float y, float z, int sizeX, int sizeY, int sizeZ, float extraX, float extraY, float extraZ, Direction direction){
         float fixX;
         float fixY;
         float fixZ;
         switch (direction){
             case UP:
-                fixX = (sizeX + x)/2;
-                fixY = y;
-                fixZ = (sizeZ + z)/2;
+                //fixX is the point between x and f
+                //f = size + x than (f + x)/2 = (sizeX + x + x)/2
+                fixX = (sizeX + x + x)/2;
+                fixY = y - extraY;
+                fixZ = (sizeZ + z + z)/2;
                 break;
             case NORTH:
-                fixX =
+                fixX = (sizeX + x + x)/2;
+                fixY = (sizeY + y + y)/2;
+                fixZ = z + sizeZ + extraZ;
+                break;
+            case WEST:
+                fixX = x + sizeX + extraX;
+                fixY = (sizeY + y + y)/2;
+                fixZ = (sizeZ + z + z)/2;
+                break;
+            case EAST:
+                fixX = x - extraX;
+                fixY = (sizeY + y + y)/2;
+                fixZ = (sizeZ + z + z)/2;
+                break;
+            case DOWN:
+                fixX = (sizeX + x + x)/2;
+                fixY = y + sizeY + extraY;
+                fixZ = (sizeZ + z + z)/2;
+                break;
+            case SOUTH:
+                fixX = (sizeX + x + x)/2;
+                fixY = (sizeY + y + y)/2;
+                fixZ = z - extraZ;
+                break;
+            default:
+                throw new IllegalArgumentException("unknown direction:" + direction);
         }
+        return this.createCuboid(x, y, z, sizeX, sizeY, sizeZ, extraX, extraY, extraZ, direction, fixX, fixY, fixZ);
+    }
+    public MutableModelPart addCuboid(float x, float y, float z, int sizeX, int sizeY, int sizeZ, float extraX, float extraY, float extraZ, Direction direction){
+        this.iCuboids.add(this.createCuboid(x, y, z, sizeX, sizeY, sizeZ, extraX, extraY, extraZ, direction));
+        return this;
+    }
+
+    public BendableCuboid createCuboid(float x, float y, float z, int sizeX, int sizeY, int sizeZ, float extra, Direction direction){
+        return this.createCuboid(x, y, z, sizeX, sizeY, sizeZ, extra, extra, extra, direction);
+    }
+    public MutableModelPart addCuboid(float x, float y, float z, int sizeX, int sizeY, int sizeZ, float extra, Direction direction){
+        return this.addCuboid(x, y, z, sizeX, sizeY, sizeZ, extra, extra, extra, direction);
     }
 }

@@ -77,7 +77,7 @@ public class BendableCuboid implements ICuboid {
         this.moveVec = new Vector3f(0, size/2, 0);
         switch (direction){
             case DOWN:
-                matrix.multiply(Matrix4f.translate(0, size * 2, 0));
+                matrix.multiply(Matrix4f.translate(0, (size -extraY)* 2, 0));
                 matrix.multiply(Matrix4f.scale(1, -1, 1));
                 break;
             default:

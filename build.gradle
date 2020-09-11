@@ -14,11 +14,46 @@ minecraft {
 	accessWidener = file("src/main/resources/bendylib.accesswidener")
 }
 
+sourceSets	{
+
+	//Testmod is a heavily modified version of Emotecraft.
+
+	testmod{
+		compileClasspath += main.compileClasspath
+		runtimeClasspath += main.runtimeClasspath
+	}
+}
+
 dependencies {
+	/*
 	//to change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	 */
+
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	modImplementation "io.github.prospector:modmenu:${project.modmenu_version}"
+	//include "io.github.prospector:modmenu:${project.modmenu_version}"
+	modImplementation "me.shedaniel.cloth:config-2:${project.cloth_version}"
+	//include "me.shedaniel.cloth:config-2:${project.cloth_version}"
+
+	//implementation files("bendy-lib-0.0.0-dev.jar")
+	//runtimeOnly(files("bendy-lib-0.0.0-dev.jar"))
+
+	//include(files("bendy-lib-0.0.0-dev.jar"))
+
+	testmodCompile sourceSets.main.output
+
+	implementation 'com.google.code.gson:gson:2.8.5' //GSon serializer
+
+	afterEvaluate {
+		testmodCompile( project(":").sourceSets.testmod.output)
+	}
 }
 
 processResources {

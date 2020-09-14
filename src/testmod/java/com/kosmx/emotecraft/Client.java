@@ -34,7 +34,11 @@ public class Client implements ClientModInitializer {
     private static KeyBinding emoteKeyBinding;
     private static KeyBinding debugEmote;
     private static KeyBinding stopEmote;
+    private static KeyBinding toggleBendParts;
     public static final File externalEmotes = FabricLoader.getInstance().getGameDir().resolve("emotes").toFile();
+
+    public static boolean showBendPats = true;
+
     @Override
     public void onInitializeClient() {
         //There is the only client stuff
@@ -222,6 +226,16 @@ public class Client implements ClientModInitializer {
                 ClientSidePacketRegistry.INSTANCE.sendToServer(Main.EMOTE_STOP_NETWORK_PACKET_ID, buf);
             }
         });
+
+        toggleBendParts = new KeyBinding("toggle bend parts", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F5, "category.emotecraft.keybinding");
+        KeyBindingHelper.registerKeyBinding(toggleBendParts);
+
+        ClientTickEvents.END_CLIENT_TICK.register(minecraftClient -> {
+            if(toggleBendParts.wasPressed()){
+                showBendPats = !showBendPats;
+            }
+        });
+
 
         KeyPressCallback.EVENT.register((EmoteHolder::playEmote));
     }

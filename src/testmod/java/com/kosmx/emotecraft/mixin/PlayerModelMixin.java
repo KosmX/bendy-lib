@@ -61,22 +61,22 @@ public class PlayerModelMixin<T extends LivingEntity> extends BipedEntityModel<T
         this.mutatedLeftLeg = new BendableModelPart(this.leftLeg, emoteSupplier);
         this.mutatedLeftPantLeg = new BendableModelPart(this.leftPantLeg, emoteSupplier);
         mutatedTorso.addCuboid(-4.0F, 0.0F, -2.0F, 8, 12, 4, scale, Direction.DOWN);
-        mutatedRightLeg.addCuboid(-2, 0, -2, 4, 12, 4, scale, Direction.UP);
-        mutatedLeftLeg.addCuboid(-2, 0, -2, 4, 12, 4, scale, Direction.UP);
+        mutatedRightLeg.addCuboid(-2, 0, -2, 4, 12, 4, scale, Direction.NORTH);
+        mutatedLeftLeg.addCuboid(-2, 0, -2, 4, 12, 4, scale, Direction.SOUTH);
         mutatedJacket.addCuboid(-4.0F, 0.0F, -2.0F, 8, 12, 4, scale + 0.25f, Direction.DOWN);
-        mutatedRightPantLeg.addCuboid(-2, 0, -2, 4, 12, 4, scale + 0.25f, Direction.UP);
-        mutatedLeftPantLeg.addCuboid(-2, 0, -2, 4, 12, 4, scale + 0.25f, Direction.UP);
+        mutatedRightPantLeg.addCuboid(-2, 0, -2, 4, 12, 4, scale + 0.25f, Direction.NORTH);
+        mutatedLeftPantLeg.addCuboid(-2, 0, -2, 4, 12, 4, scale + 0.25f, Direction.SOUTH);
         if(thinArms){
-            mutatedLeftArm.addCuboid(-1, -2, -2, 3, 12, 4, scale, Direction.UP);
-            mutatedRightArm.addCuboid(-2, -2, -2, 3, 12, 4, scale, Direction.UP);
-            mutatedLeftSleeve.addCuboid(-1, -2, -2, 3, 12, 4, scale + 0.25f, Direction.UP);
-            mutatedRightSleeve.addCuboid(-2, -2, -2, 3, 12, 4, scale + 0.25f, Direction.UP);
+            mutatedLeftArm.addCuboid(-1, -2, -2, 3, 12, 4, scale, Direction.WEST);
+            mutatedRightArm.addCuboid(-2, -2, -2, 3, 12, 4, scale, Direction.EAST);
+            mutatedLeftSleeve.addCuboid(-1, -2, -2, 3, 12, 4, scale + 0.25f, Direction.WEST);
+            mutatedRightSleeve.addCuboid(-2, -2, -2, 3, 12, 4, scale + 0.25f, Direction.EAST);
         }
         else {
-            mutatedLeftArm.addCuboid(-1, -2, -2, 4, 12, 4, scale, Direction.UP);
-            mutatedRightArm.addCuboid(-3, -2, -2, 4, 12, 4, scale, Direction.UP);
-            mutatedLeftSleeve.addCuboid(-1, -2, -2, 4, 12, 4, scale + 0.25f, Direction.UP);
-            mutatedRightSleeve.addCuboid(-3, -2, -2, 4, 12, 4, scale + 0.25f, Direction.UP);
+            mutatedLeftArm.addCuboid(-1, -2, -2, 4, 12, 4, scale, Direction.WEST);
+            mutatedRightArm.addCuboid(-3, -2, -2, 4, 12, 4, scale, Direction.EAST);
+            mutatedLeftSleeve.addCuboid(-1, -2, -2, 4, 12, 4, scale + 0.25f, Direction.WEST);
+            mutatedRightSleeve.addCuboid(-3, -2, -2, 4, 12, 4, scale + 0.25f, Direction.EAST);
         }
         //TODO some bendable armor...
     }

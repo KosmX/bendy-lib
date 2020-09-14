@@ -43,7 +43,7 @@ public class BendableModelPart extends MutableModelPart {
 
     @Override
     public boolean isActive() {
-        return Emote.isRunningEmote(this.emote.get());
+        return Client.showBendPats;
     }
 
     public void bend(float a, float b){

@@ -32,11 +32,12 @@ public class BendableCuboid implements ICuboid {
     public final float maxY;
     public final float maxZ;
     protected final float size;
-    protected final Vector3f moveVec;
+    protected Vector3f moveVec;
     //to shift the matrix to the center axis
     protected float fixX;
     protected float fixY;
     protected float fixZ;
+    protected final Direction direction;
 
 
     /**
@@ -61,6 +62,7 @@ public class BendableCuboid implements ICuboid {
      * @param extraZ extra Z size
      */
     public BendableCuboid(int u, int v, float x, float y, float z, float sizeX, float sizeY, float sizeZ, boolean mirror, float textureWidth, float textureHeight, Direction direction, float fixX, float fixY, float fixZ, float extraX, float extraY, float extraZ) {
+        this.direction = direction;
         this.matrix = new Matrix4f();
         this.matrix.loadIdentity();
         this.fixX = fixX;
@@ -80,8 +82,23 @@ public class BendableCuboid implements ICuboid {
                 matrix.multiply(Matrix4f.translate(0, (size -extraY)* 2, 0));
                 matrix.multiply(Matrix4f.scale(1, -1, 1));
                 break;
+            case NORTH:
+                matrix.multiply(Matrix4f.scale(1, 1, -1));
+                matrix.multiply(Matrix4f.translate(0, 0, -size));
+            case SOUTH:
+                this.moveVec = new Vector3f(0, 0, size/2);
+                break;
+            case WEST:
+                matrix.multiply(Matrix4f.scale(-1, 1, 1));
+                matrix.multiply(Matrix4f.translate(-size*1.5f, 0, 0));
+                moveVec = new Vector3f(size/2, 0, 0);
+                break;
+            case EAST:
+                moveVec = new Vector3f(size/2, 0, 0);
+                break;
             default:
                 matrix.multiply(direction.getRotationQuaternion());
+                break;
         }
         float f = x + sizeX;
         float g = y + sizeY;
@@ -189,16 +206,16 @@ public class BendableCuboid implements ICuboid {
                 iVertices[2] = new Vertex(origins[2], 0, 0);
                 iVertices[3] = new Vertex(origins[3], 0, 0);
                 //west
-                this.sides[0] = new Quad(new IVertex[]{iVertices[0], iVertices[3], iVertices[2], iVertices[1]}, j, q, m, p, textureWidth, textureHeight, mirror);
+                this.sides[0] = new Quad(new IVertex[]{iVertices[0], iVertices[3], iVertices[2], iVertices[1]}, j, q, k, r, textureWidth, textureHeight, mirror);
                 //down
-                this.sides[1] = new Quad(new IVertex[]{repVertices[3], iVertices[3], iVertices[0], repVertices[0]}, (k + l)/2, p, l, q, textureWidth, textureHeight, mirror);
-                this.sides[2] = new Quad(new IVertex[]{repVertices[7], repVertices[3], repVertices[0], repVertices[4]}, k, p, (k + l)/2, q, textureWidth, textureHeight, mirror);
+                this.sides[1] = new Quad(new IVertex[]{repVertices[3], iVertices[3], iVertices[0], repVertices[0]}, k, p, (k + l)/2, q, textureWidth, textureHeight, mirror);
+                this.sides[2] = new Quad(new IVertex[]{repVertices[7], repVertices[3], repVertices[0], repVertices[4]}, (k + l)/2, p, l, q, textureWidth, textureHeight, mirror);
                 //up
-                this.sides[3] = new Quad(new IVertex[]{repVertices[1], iVertices[1], iVertices[2], repVertices[2]}, (m + l)/2, p, m, q, textureWidth, textureHeight, mirror);
-                this.sides[4] = new Quad(new IVertex[]{repVertices[5], repVertices[1], repVertices[2], repVertices[6]}, l, p, (m + l)/2, q, textureWidth, textureHeight, mirror);
+                this.sides[3] = new Quad(new IVertex[]{repVertices[1], iVertices[1], iVertices[2], repVertices[2]}, l, q, (m + l)/2, p, textureWidth, textureHeight, mirror);
+                this.sides[4] = new Quad(new IVertex[]{repVertices[5], repVertices[1], repVertices[2], repVertices[6]}, (m + l)/2, q, m, p, textureWidth, textureHeight, mirror);
                 //north
-                this.sides[5] = new Quad(new IVertex[]{repVertices[0], iVertices[0], iVertices[1], repVertices[1]}, (k + l)/2, q, l, r, textureWidth, textureHeight, mirror);
-                this.sides[6] = new Quad(new IVertex[]{repVertices[4], repVertices[0], repVertices[1], repVertices[5]}, k, q, (k + l)/2, r, textureWidth, textureHeight, mirror);
+                this.sides[5] = new Quad(new IVertex[]{repVertices[0], iVertices[0], iVertices[1], repVertices[1]}, k, q, (k + l)/2, r, textureWidth, textureHeight, mirror);
+                this.sides[6] = new Quad(new IVertex[]{repVertices[4], repVertices[0], repVertices[1], repVertices[5]}, (k + l)/2, q, l, r, textureWidth, textureHeight, mirror);
                 //east
                 this.sides[7] = new Quad(new IVertex[]{repVertices[7], repVertices[4], repVertices[5], repVertices[6]}, l, q, n, r, textureWidth, textureHeight, mirror);
                 //south
@@ -227,16 +244,16 @@ public class BendableCuboid implements ICuboid {
                 repVertices[6] = swap[2];
                 repVertices[7] = swap[3];
                 //west
-                this.sides[0] = new Quad(new IVertex[]{iVertices[0], iVertices[3], iVertices[2], iVertices[1]}, j, q, m, p, textureWidth, textureHeight, mirror);
+                this.sides[0] = new Quad(new IVertex[]{iVertices[0], iVertices[3], iVertices[2], iVertices[1]}, j, q, k, r, textureWidth, textureHeight, mirror);
                 //down
-                this.sides[1] = new Quad(new IVertex[]{repVertices[3], iVertices[3], iVertices[0], repVertices[0]}, (k + l)/2, p, l, q, textureWidth, textureHeight, mirror);
-                this.sides[2] = new Quad(new IVertex[]{repVertices[7], repVertices[3], repVertices[0], repVertices[4]}, k, p, (k + l)/2, q, textureWidth, textureHeight, mirror);
+                this.sides[1] = new Quad(new IVertex[]{repVertices[3], iVertices[3], iVertices[0], repVertices[0]}, k, p, (k + l)/2, q, textureWidth, textureHeight, mirror);
+                this.sides[2] = new Quad(new IVertex[]{repVertices[7], repVertices[3], repVertices[0], repVertices[4]}, (k + l)/2, p, l, q, textureWidth, textureHeight, mirror);
                 //up
-                this.sides[3] = new Quad(new IVertex[]{repVertices[1], iVertices[1], iVertices[2], repVertices[2]}, (m + l)/2, p, m, q, textureWidth, textureHeight, mirror);
-                this.sides[4] = new Quad(new IVertex[]{repVertices[5], repVertices[1], repVertices[2], repVertices[6]}, l, p, (m + l)/2, q, textureWidth, textureHeight, mirror);
+                this.sides[3] = new Quad(new IVertex[]{repVertices[1], iVertices[1], iVertices[2], repVertices[2]}, l, q, (m + l)/2, p, textureWidth, textureHeight, mirror);
+                this.sides[4] = new Quad(new IVertex[]{repVertices[5], repVertices[1], repVertices[2], repVertices[6]}, (m + l)/2, q, m, p, textureWidth, textureHeight, mirror);
                 //north
-                this.sides[5] = new Quad(new IVertex[]{repVertices[0], iVertices[0], iVertices[1], repVertices[1]}, (k + l)/2, q, l, r, textureWidth, textureHeight, mirror);
-                this.sides[6] = new Quad(new IVertex[]{repVertices[4], repVertices[0], repVertices[1], repVertices[5]}, k, q, (k + l)/2, r, textureWidth, textureHeight, mirror);
+                this.sides[5] = new Quad(new IVertex[]{repVertices[0], iVertices[0], iVertices[1], repVertices[1]}, k, q, (k + l)/2, r, textureWidth, textureHeight, mirror);
+                this.sides[6] = new Quad(new IVertex[]{repVertices[4], repVertices[0], repVertices[1], repVertices[5]}, (k + l)/2, q, l, r, textureWidth, textureHeight, mirror);
                 //east
                 this.sides[7] = new Quad(new IVertex[]{repVertices[7], repVertices[4], repVertices[5], repVertices[6]}, l, q, n, r, textureWidth, textureHeight, mirror);
                 //south
@@ -246,8 +263,8 @@ public class BendableCuboid implements ICuboid {
             case SOUTH:
                 origins[0] = new Vector3f(x, y, z);
                 origins[1] = new Vector3f(f, y, z);
-                origins[0] = new Vector3f(f, g, z);
-                origins[1] = new Vector3f(x, g, z);
+                origins[2] = new Vector3f(f, g, z);
+                origins[3] = new Vector3f(x, g, z);
                 iVertices[0] = new Vertex(origins[0], 0, 0);
                 iVertices[1] = new Vertex(origins[1], 0, 0);
                 iVertices[2] = new Vertex(origins[2], 0, 0);
@@ -257,21 +274,23 @@ public class BendableCuboid implements ICuboid {
                 this.sides[1] = new Quad(new IVertex[]{repVertices[5], repVertices[4], repVertices[0], repVertices[1]}, k, p, l, (q + p)/2, textureWidth, textureHeight, mirror);
                 //up
                 this.sides[2] = new Quad(new IVertex[]{iVertices[2], iVertices[3], repVertices[3], repVertices[2]}, l, (q + p)/2, m, p, textureWidth, textureHeight, mirror);
-                this.sides[3] = new Quad(new IVertex[]{repVertices[2], repVertices[3], repVertices[7], repVertices[6]}, k, p, l, (q + p)/2, textureWidth, textureHeight, mirror);
+                this.sides[3] = new Quad(new IVertex[]{repVertices[2], repVertices[3], repVertices[7], repVertices[6]}, l, q, m, (q + p)/2, textureWidth, textureHeight, mirror);
                 //west
                 this.sides[4] = new Quad(new IVertex[]{iVertices[0], repVertices[0], repVertices[3], iVertices[3]}, (j + k)/2, q, k, r, textureWidth, textureHeight, mirror);
                 this.sides[5] = new Quad(new IVertex[]{repVertices[0], repVertices[4], repVertices[7], repVertices[3]}, j, q, (j + k)/2, r, textureWidth, textureHeight, mirror);
                 //north
                 this.sides[6] = new Quad(new IVertex[]{iVertices[1], iVertices[0], iVertices[3], iVertices[2]}, k, q, l, r, textureWidth, textureHeight, mirror);
+                //south
+                this.sides[7] = new Quad(new IVertex[]{repVertices[4], repVertices[5], repVertices[6], repVertices[7]}, n, q, o, r, textureWidth, textureHeight, mirror);
                 //east
-                this.sides[7] = new Quad(new IVertex[]{repVertices[1], iVertices[1], iVertices[2], repVertices[2]}, l, q, (l + n)/2, r, textureWidth, textureHeight, mirror);
-                this.sides[8] = new Quad(new IVertex[]{repVertices[5], repVertices[1], repVertices[2], repVertices[6]}, (l + n)/2, q, l, r, textureWidth, textureHeight, mirror);
+                this.sides[8] = new Quad(new IVertex[]{repVertices[1], iVertices[1], iVertices[2], repVertices[2]}, l, q, (l + n)/2, r, textureWidth, textureHeight, mirror);
+                this.sides[9] = new Quad(new IVertex[]{repVertices[5], repVertices[1], repVertices[2], repVertices[6]}, (l + n)/2, q, n, r, textureWidth, textureHeight, mirror);
                 break;
             case NORTH:
                 origins[0] = new Vector3f(x, y, h);
                 origins[1] = new Vector3f(f, y, h);
-                origins[0] = new Vector3f(f, g, h);
-                origins[1] = new Vector3f(x, g, h);
+                origins[2] = new Vector3f(f, g, h);
+                origins[3] = new Vector3f(x, g, h);
                 iVertices[0] = new Vertex(origins[0], 0, 0);
                 iVertices[1] = new Vertex(origins[1], 0, 0);
                 iVertices[2] = new Vertex(origins[2], 0, 0);
@@ -293,15 +312,17 @@ public class BendableCuboid implements ICuboid {
                 this.sides[1] = new Quad(new IVertex[]{repVertices[5], repVertices[4], repVertices[0], repVertices[1]}, k, p, l, (q + p)/2, textureWidth, textureHeight, mirror);
                 //up
                 this.sides[2] = new Quad(new IVertex[]{iVertices[2], iVertices[3], repVertices[3], repVertices[2]}, l, (q + p)/2, m, p, textureWidth, textureHeight, mirror);
-                this.sides[3] = new Quad(new IVertex[]{repVertices[2], repVertices[3], repVertices[7], repVertices[6]}, k, p, l, (q + p)/2, textureWidth, textureHeight, mirror);
+                this.sides[3] = new Quad(new IVertex[]{repVertices[2], repVertices[3], repVertices[7], repVertices[6]}, l, q, m, (q + p)/2, textureWidth, textureHeight, mirror);
                 //west
                 this.sides[4] = new Quad(new IVertex[]{iVertices[0], repVertices[0], repVertices[3], iVertices[3]}, (j + k)/2, q, k, r, textureWidth, textureHeight, mirror);
                 this.sides[5] = new Quad(new IVertex[]{repVertices[0], repVertices[4], repVertices[7], repVertices[3]}, j, q, (j + k)/2, r, textureWidth, textureHeight, mirror);
                 //north
                 this.sides[6] = new Quad(new IVertex[]{iVertices[1], iVertices[0], iVertices[3], iVertices[2]}, k, q, l, r, textureWidth, textureHeight, mirror);
+                //south
+                this.sides[7] = new Quad(new IVertex[]{repVertices[4], repVertices[5], repVertices[6], repVertices[7]}, n, q, o, r, textureWidth, textureHeight, mirror);
                 //east
-                this.sides[7] = new Quad(new IVertex[]{repVertices[1], iVertices[1], iVertices[2], repVertices[2]}, l, q, (l + n)/2, r, textureWidth, textureHeight, mirror);
-                this.sides[8] = new Quad(new IVertex[]{repVertices[5], repVertices[1], repVertices[2], repVertices[6]}, (l + n)/2, q, l, r, textureWidth, textureHeight, mirror);
+                this.sides[8] = new Quad(new IVertex[]{repVertices[1], iVertices[1], iVertices[2], repVertices[2]}, l, q, (l + n)/2, r, textureWidth, textureHeight, mirror);
+                this.sides[9] = new Quad(new IVertex[]{repVertices[5], repVertices[1], repVertices[2], repVertices[6]}, (l + n)/2, q, n, r, textureWidth, textureHeight, mirror);
                 break;
             default:
                 System.out.println("[Bendy-lib] Error while creating cuboid: unknown direction: " + direction + "." );
@@ -310,7 +331,7 @@ public class BendableCuboid implements ICuboid {
         Matrix4f matrix4f = new Matrix4f();
         matrix4f.loadIdentity();
         setRotation(matrix4f);
-        //setRotationDeg(-45, -100); //debug stuff
+        //setRotationDeg(-45, -17); //debug stuff
     }
 
     public Matrix4f setRotation(Matrix4f rotation){
@@ -334,6 +355,8 @@ public class BendableCuboid implements ICuboid {
 
     private void setMiddle(Matrix4f matrix){
         Vector4f moved = new Vector4f(this.moveVec.getX(), moveVec.getY(), moveVec.getZ(), 1);
+        Vector3f movec = moveVec.copy();
+        movec.normalize();
         moved.transform(matrix);
         Vector3f cross = this.moveVec.copy();
         cross.normalize();
@@ -344,10 +367,10 @@ public class BendableCuboid implements ICuboid {
         cross.normalize();
         //Matrix3f rotate = new Matrix3f(Vector3f.NEGATIVE_Y.getDegreesQuaternion(90));
         Vector3f rotated = cross.copy();
-        rotated.transform(new Matrix3f(Vector3f.NEGATIVE_Y.getDegreesQuaternion(-90)));
+        rotated.transform(new Matrix3f(movec.getDegreesQuaternion(90)));
         rotated.scale(cosh);
         Matrix4 transformation = new Matrix4();
-        transformation.fromEigenVector(cross, new Vector3f(0, 1, 0), rotated);
+        transformation.fromEigenVector(cross, movec, rotated);
         matrix.multiply(transformation);
     }
 
@@ -369,6 +392,8 @@ public class BendableCuboid implements ICuboid {
     public Matrix4f setRotationRad(float axisf, float value){
         value = value/2;
         Vector3f axis = new Vector3f((float) Math.cos(axisf), 0, (float) Math.sin(axisf));
+        Matrix3f matrix3f = new Matrix3f(direction.getRotationQuaternion());
+        axis.transform(matrix3f);
         return this.setRotation(axis.getRadialQuaternion(value));
     }
 

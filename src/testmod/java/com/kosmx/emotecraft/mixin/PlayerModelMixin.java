@@ -116,7 +116,7 @@ public class PlayerModelMixin<T extends LivingEntity> extends BipedEntityModel<T
             float axisf = pair.getLeft();
             Vector3f axis = new Vector3f((float) Math.cos(axisf), 0, (float) Math.sin(axisf));
             //return this.setRotation(axis.getRadialQuaternion(bend));
-            matrices.multiply(axis.getRadialQuaternion(-bend));
+            matrices.multiply(axis.getRadialQuaternion(bend));
             matrices.translate(0, -offset, 0);
 
             this.head.render(matrices, vertices, light, overlay, red, green, blue, alpha);

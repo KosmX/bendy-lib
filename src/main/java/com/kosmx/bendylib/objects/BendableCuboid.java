@@ -21,7 +21,7 @@ import net.minecraft.util.math.Quaternion;
  */
 public class BendableCuboid implements ICuboid {
     protected final Quad[] sides = new Quad[10];
-    protected final Matrix4f matrix;
+    //protected final Matrix4f matrix; - Shouldn't use... Change the moveVec instead of this.
     protected Matrix4f lastPosMatrix;
     protected final RepositionableVertex.Pos3f[] positions = new RepositionableVertex.Pos3f[8];
     protected final Vector3f[] origins = new Vector3f[4];
@@ -63,8 +63,8 @@ public class BendableCuboid implements ICuboid {
      */
     public BendableCuboid(int u, int v, float x, float y, float z, float sizeX, float sizeY, float sizeZ, boolean mirror, float textureWidth, float textureHeight, Direction direction, float fixX, float fixY, float fixZ, float extraX, float extraY, float extraZ) {
         this.direction = direction;
-        this.matrix = new Matrix4f();
-        this.matrix.loadIdentity();
+        //this.matrix = new Matrix4f();
+        //this.matrix.loadIdentity();
         this.fixX = fixX;
         this.fixY = fixY;
         this.fixZ = fixZ;
@@ -76,28 +76,25 @@ public class BendableCuboid implements ICuboid {
         this.maxY = y + sizeY;
         this.maxZ = z + sizeZ;
         this.size = direction.getAxis() == Direction.Axis.X ? sizeX + 2*extraX : direction.getAxis() == Direction.Axis.Y ? sizeY + 2*extraY: sizeZ + 2*extraZ;
-        this.moveVec = new Vector3f(0, size/2, 0);
+        //I did a TERRIBLE job with translating the matrix... There must be an issue somewhere else
         switch (direction){
             case DOWN:
-                matrix.multiply(Matrix4f.translate(0, (size -extraY)* 2, 0));
-                matrix.multiply(Matrix4f.scale(1, -1, 1));
+                moveVec = new Vector3f(0, -size/2, 0);
                 break;
             case NORTH:
-                matrix.multiply(Matrix4f.scale(1, 1, -1));
-                matrix.multiply(Matrix4f.translate(0, 0, -size));
+                moveVec = new Vector3f(0, 0, -size/2);
+                break;
             case SOUTH:
                 this.moveVec = new Vector3f(0, 0, size/2);
                 break;
             case WEST:
-                matrix.multiply(Matrix4f.scale(-1, 1, 1));
-                matrix.multiply(Matrix4f.translate(-size*1.5f, 0, 0));
-                moveVec = new Vector3f(size/2, 0, 0);
+                moveVec = new Vector3f(-size/2, 0, 0);
                 break;
             case EAST:
                 moveVec = new Vector3f(size/2, 0, 0);
                 break;
             default:
-                matrix.multiply(direction.getRotationQuaternion());
+                this.moveVec = new Vector3f(0, size/2, 0);
                 break;
         }
         float f = x + sizeX;
@@ -335,7 +332,8 @@ public class BendableCuboid implements ICuboid {
     }
 
     public Matrix4f setRotation(Matrix4f rotation){
-        Matrix4f shift = this.getMatrix();
+        Matrix4f shift = new Matrix4f();
+        shift.loadIdentity();
         Matrix4f length = Matrix4f.translate(this.moveVec.getX(), this.moveVec.getY(), this.moveVec.getZ());
         shift.multiply(length);
         shift.multiply(Matrix4f.translate(this.fixX, this.fixY, this.fixZ));
@@ -405,11 +403,6 @@ public class BendableCuboid implements ICuboid {
      */
     public Matrix4f setRotationDeg(float axis, float val){
         return this.setRotationRad(axis * 0.0174533f, val * 0.0174533f);
-    }
-
-    public Matrix4f getMatrix(){
-        //The original Matrix4f should never change
-        return this.matrix.copy();
     }
 
     @Override

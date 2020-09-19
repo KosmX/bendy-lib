@@ -14,7 +14,7 @@ public interface IModelPart {
     /**
      * @param part remove, if this is the active mutated.
      * @return action success
-     * use {@link IModelPart#getMutatedPart()} to remove the active
+     * use {@link IModelPart#getActiveMutatedPart()} to remove the active
      */
     boolean removeMutate(MutableModelPart part);
 
@@ -22,7 +22,7 @@ public interface IModelPart {
      * @return The active mutated part
      */
     @Nullable
-    MutableModelPart getMutatedPart();
+    MutableModelPart getActiveMutatedPart();
 
     float getTextureWidth();
     float getTextureHeight();

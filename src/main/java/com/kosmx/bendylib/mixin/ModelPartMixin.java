@@ -3,6 +3,8 @@ package com.kosmx.bendylib.mixin;
 
 import com.kosmx.bendylib.IModelPart;
 import com.kosmx.bendylib.MutableModelPart;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import it.unimi.dsi.fastutil.objects.ObjectList;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -26,23 +28,18 @@ public class ModelPartMixin implements IModelPart {
     @Shadow public float textureHeight;
     @Shadow public int textureOffsetU;
     @Shadow public int textureOffsetV;
-    @Nullable
-    protected MutableModelPart mutatedPart = null;
+
+    protected final ObjectList<MutableModelPart> mutatedParts = new ObjectArrayList<>();
 
     /**
      * @author KosmX - bendy-lib
      * @param part part, what ypu want to use
-     * @return is the mutation success, can be false if another mutation is already active
+     * @return true, if it isn't assigned already.
      */
     @Override
     public boolean mutate(MutableModelPart part) {
-        if(part == this.mutatedPart)return false;
-        if(this.mutatedPart != null && this.mutatedPart.isActive() && this.mutatedPart.getPriority() < part.getPriority())return false;
-        if(this.mutatedPart != null && this.mutatedPart.getPriority() == part.getPriority()){
-            System.out.println("[bendy-lib] " + part.modId() + " is possibly incompatible with " + this.mutatedPart.modId() + ".");
-        }
-        part.setLast(this.mutatedPart);
-        this.mutatedPart = part;
+        if(mutatedParts.contains(part))return false;
+        mutatedParts.add(part);
         return true;
     }
 
@@ -52,27 +49,29 @@ public class ModelPartMixin implements IModelPart {
      */
     @Override
     public boolean removeMutate(MutableModelPart part) {
-        if (part == null) part = this.mutatedPart;
-        if(this.mutatedPart == part && this.mutatedPart != null){
-            MutableModelPart old = this.mutatedPart;
-            this.mutatedPart = this.mutatedPart.getLast();
-            old.setLast(null);
-            return true;
-        }
-        if(this.mutatedPart != null){
-            return this.mutatedPart.remove(part);
-        }
-        return false;
+        return mutatedParts.remove(part);
     }
 
 
     /**
      * @author KosmX - bendy-lib
+     * @return Active, highest priority mutated part, null if no active or empty
      */
     @Nullable
     @Override
-    public MutableModelPart getMutatedPart() {
-        return this.mutatedPart;
+    public MutableModelPart getActiveMutatedPart() {
+        MutableModelPart part = null;
+        for(MutableModelPart i:this.mutatedParts){
+            if(i.isActive() && (part == null || !part.isActive() || part.getPriority() <= i.getPriority())){
+                if(part != null && part.getPriority() == i.getPriority()){
+                    System.out.println("[bendy-lib] " + part.modId() + " is possibly incompatible with " + i.modId() + ".");
+                    return null;
+                }else {
+                    part = i;
+                }
+            }
+        }
+        return part;
     }
 
     @Override
@@ -100,10 +99,11 @@ public class ModelPartMixin implements IModelPart {
      */
     @Inject(method = "render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;IIFFFF)V", at = @At(value = "HEAD" ), cancellable = true)
     private void renderInject(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green, float blue, float alpha, CallbackInfo callbackInfo){
-        if(this.visible && this.mutatedPart != null && this.mutatedPart.getActive() != null){
+        MutableModelPart mutatedPart = this.getActiveMutatedPart();
+        if(this.visible && mutatedPart != null){
             matrices.push();
             this.rotate(matrices);
-            this.mutatedPart.getActive().render(matrices, vertices, light, overlay, red, green, blue, alpha);
+            mutatedPart.render(matrices, vertices, light, overlay, red, green, blue, alpha);
             matrices.pop();
             callbackInfo.cancel(); //if mutate active, don't render the original
         }

@@ -109,7 +109,8 @@ public class PlayerModelMixin<T extends LivingEntity> extends BipedEntityModel<T
             this.rightPantLeg.render(matrices, vertices, light, overlay, red, green, blue, alpha);
             this.leftPantLeg.render(matrices, vertices, light, overlay, red, green, blue, alpha);
 
-            float offset = 0.4375f;
+            float offset = 0.375f;
+
             matrices.translate(0, offset, 0);
             Pair<Float, Float> pair = emoteSupplier.get().torso.getBend();
             float bend = pair.getRight();

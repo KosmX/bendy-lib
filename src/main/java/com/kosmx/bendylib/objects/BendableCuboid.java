@@ -347,6 +347,7 @@ public class BendableCuboid implements ICuboid {
         shift.multiply(Matrix4f.translate(-this.fixX, -this.fixY, -this.fixZ));
         shift.multiply(length);
         setPoints(shift, 4);
+        shift.multiply(Matrix4f.translate(-this.moveVec.getX()*2, -this.moveVec.getY()*2, -this.moveVec.getZ()*2));
         this.lastPosMatrix = shift; //Store it for later use
         return shift;
     }

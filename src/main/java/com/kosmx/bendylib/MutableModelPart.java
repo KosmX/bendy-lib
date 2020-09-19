@@ -23,6 +23,7 @@ import javax.annotation.Nullable;
 public abstract class MutableModelPart extends ModelPart {
 
     @Nullable
+    @Deprecated
     private MutableModelPart last = null;
 
     protected final ObjectList<ICuboid> iCuboids = new ObjectArrayList<>();
@@ -93,62 +94,6 @@ public abstract class MutableModelPart extends ModelPart {
      * @return the mod's name or id
      */
     public abstract String modId();
-
-    /**
-     * to restore the last part, when deactivated.
-     */
-    public void setLast(@Nullable MutableModelPart part){
-        if(this == part){
-            this.last = null;
-            return;
-        }
-        this.last = part;
-        if(this.loopPrevent())this.last = null;
-    }
-
-    public boolean remove(MutableModelPart part){
-        if(this.last != null){
-            if(this.last == part){
-                MutableModelPart old = this.last;
-                this.last = old.last;
-                old.last = null;
-                return true;
-            }
-            else {
-                return this.last.remove(part);
-            }
-        }
-        return false;
-    }
-
-    @Nullable
-    public MutableModelPart getLast(){
-        return this.last;
-    }
-
-    @Nullable
-    public MutableModelPart getActive(){
-        if(this.isActive()) return this;
-        if(this.last != null)return this.last.getActive();
-        return null;
-    }
-
-    /**
-     * @return true if there is any loop.
-     * If you need to override it and you know what are you doing, you will know how to do it.
-     */
-    public final boolean loopPrevent(){
-        if(this.last != null){
-            if(this.loopPrevent())return true;
-            MutableModelPart part = this;
-            while (part.last != null){
-                part = part.last;
-                if(part == this)return true;
-            }
-        }
-        return false;
-    }
-
 
 
     //The Bendable cuboid generator code

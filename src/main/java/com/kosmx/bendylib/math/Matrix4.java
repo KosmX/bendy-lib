@@ -79,7 +79,7 @@ public class Matrix4 extends Matrix4f {
 
      */
     public static float length(Vector3f vector4f){
-        return (float) Math.cbrt(vector4f.getX() * vector4f.getX() + vector4f.getY() * vector4f.getY() + vector4f.getZ() * vector4f.getZ());
+        return (float) Math.sqrt(vector4f.getX() * vector4f.getX() + vector4f.getY() * vector4f.getY() + vector4f.getZ() * vector4f.getZ());
     }
 
 }

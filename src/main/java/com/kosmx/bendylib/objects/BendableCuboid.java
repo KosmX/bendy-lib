@@ -352,23 +352,35 @@ public class BendableCuboid implements ICuboid {
     }
 
     private void setMiddle(Matrix4f matrix){
-        Vector4f moveSample4f = new Vector4f(this.moveVec.getX(), moveVec.getY(), moveVec.getZ(), 1);
+
+        /*setup vectors
+        heightAxis, vector in the bend direction
+        moveSample, originally copy of heightAxis, 3f: 3D form; 4f: 4D form in Floats
+
+         */
         Vector3f heightAxis = moveVec.copy();
         heightAxis.normalize();
+        Vector4f moveSample4f = new Vector4f(this.moveVec.getX(), moveVec.getY(), moveVec.getZ(), 0);
         moveSample4f.transform(matrix);
-        Vector3f cross = this.moveVec.copy();
-        cross.normalize();
         Vector3f moveSample3f = new Vector3f(moveSample4f.getX(), moveSample4f.getY(), moveSample4f.getZ());
         moveSample3f.normalize();
-        float cosh = 1/cross.dot(moveSample3f); //cosh
+        Vector3f cross = this.moveVec.copy();
+        cross.normalize();
+
+        /*
+            Sample the rotation, calculate the required scale with 1/cos(A)
+
+         */
+
+
+        float cosh = 1/cross.dot(moveSample3f); // 1/cos
         cross.cross(moveSample3f);
         if(!cross.normalize()) return; //To not try to transform with zero vectors.
-        //Matrix3f rotate = new Matrix3f(Vector3f.NEGATIVE_Y.getDegreesQuaternion(90));
         Vector3f rotated = cross.copy();
-        rotated.transform(new Matrix3f(moveSample3f.getDegreesQuaternion(90)));
-        rotated.scale(cosh);
+        rotated.transform(new Matrix3f(heightAxis.getDegreesQuaternion(-90)));
+        //rotated.scale(cosh);
         Matrix4 transformation = new Matrix4();
-        transformation.fromEigenVector(cross, heightAxis, rotated);
+        transformation.fromEigenVector(cross, heightAxis, rotated, 1, 1, cosh);
         matrix.multiply(transformation);
     }
 

@@ -25,6 +25,10 @@ import java.nio.file.Path;
 import java.util.stream.Stream;
 
 
+/*    --- Praise Tiny Potato ---
+
+    it is a Fabric project after all.
+ */
 public class Main implements ModInitializer {
 
     public static Logger LOGGER = LogManager.getLogger();

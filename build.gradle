@@ -1,7 +1,17 @@
+buildscript {
+	repositories {
+		jcenter()
+	}
+	dependencies {
+		classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.+'
+	}
+}
 plugins {
 	id 'fabric-loom' version '0.5-SNAPSHOT'
 	id 'maven-publish'
+	//id "com.jfrog.bintray" version "1.+"
 }
+apply plugin: 'com.jfrog.bintray'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -112,5 +122,27 @@ publishing {
 	}
 	dependencies{
 		compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.0'
+	}
+}
+
+bintray {
+	user = System.getenv('BINTRAY_USER')
+	key = System.getenv('BINTRAY_KEY')
+	pkg {
+		repo = 'maven'
+		name = 'bendy-lib'
+		//userOrg = 'kosmx'
+		licenses = ['CC0']
+		//vcsUrl = 'https://github.com/bintray/gradle-bintray-plugin.git'
+		version {
+			version {
+				name = 'bendy-lib'
+				desc = 'Minecraft Fabric library'
+				githubRepo = "kosmx/bendy-lib"
+				released  = new Date()
+				vcsTag = project.version
+				//attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin']
+			}
+		}
 	}
 }

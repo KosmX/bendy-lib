@@ -13,6 +13,16 @@ plugins {
 }
 apply plugin: 'com.jfrog.bintray'
 
+boolean keys_imported = new File("keys.properties").exists()
+
+if(keys_imported) {
+	file("keys.properties").withReader {
+		Properties props = new Properties()
+		props.load(it)
+		project.ext.keys = props
+	}
+}
+
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
@@ -125,18 +135,21 @@ publishing {
 	}
 }
 
+
 bintray {
-	user = System.getenv('BINTRAY_USER')
-	key = System.getenv('BINTRAY_KEY')
+	if(keys_imported) {
+		user = project.keys.bintray_user
+		key = project.keys.bintray_key
+	}
 	pkg {
-		repo = 'maven'
+		repo = 'bendy-lib'
 		name = 'bendy-lib'
 		//userOrg = 'kosmx'
-		licenses = ['CC0']
-		//vcsUrl = 'https://github.com/bintray/gradle-bintray-plugin.git'
+		licenses = ['CC0-1.0']
+		vcsUrl = 'https://github.com/KosmX/bendy-lib.git'
 		version {
 			version {
-				name = 'bendy-lib'
+				name = project.version
 				desc = 'Minecraft Fabric library'
 				githubRepo = "kosmx/bendy-lib"
 				released  = new Date()
@@ -145,4 +158,5 @@ bintray {
 			}
 		}
 	}
+	publications = ['mavenJava']
 }

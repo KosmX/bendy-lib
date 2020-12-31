@@ -374,14 +374,14 @@ public class BendableCuboid implements ICuboid {
          */
 
 
-        float cosh = 1/cross.dot(moveSample3f); // 1/cos
+        float sec = 1/cross.dot(moveSample3f); // 1/cos
         cross.cross(moveSample3f);
         if(!cross.normalize()) return; //To not try to transform with zero vectors.
         Vector3f rotated = cross.copy();
         rotated.transform(new Matrix3f(heightAxis.getDegreesQuaternion(-90)));
         //rotated.scale(cosh);
         Matrix4 transformation = new Matrix4();
-        transformation.fromEigenVector(cross, heightAxis, rotated, 1, 1, cosh);
+        transformation.fromEigenVector(cross, heightAxis, rotated, 1, 1, sec);
         matrix.multiply(transformation);
     }
 

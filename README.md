@@ -1,6 +1,22 @@
 # bendy-lib
 FabricMC library
 
+setup with gradle:
+
+```groovy
+repositories{
+  (...)
+	jcenter()
+}
+(...)
+dependencies {
+  (...)
+	modImplementation "com.kosmx.bendylib:bendy-lib:${project.bendylib_version}"
+	include "com.kosmx.bendylib:bendy-lib:${project.bendylib_version}"
+
+}
+```
+
 designed to be able to swap and bend cuboids.
 
 The api provides a way to spaw a cuboid with priorities, to be multi-mod compatible

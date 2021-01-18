@@ -20,6 +20,7 @@ dependencies {
 designed to be able to swap and bend cuboids.
 
 The api provides a way to spaw a cuboid with priorities, to be multi-mod compatible
+(bend like in Mo'bends)
 
 to swap, you have to create a class from MutableModelPart, and implement the methods.
 

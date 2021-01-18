@@ -30,5 +30,5 @@ The test mod (an older and modified version of [Emotecraft](https://github.com/k
 Sorry for this not finished documentation...
 You can find me on the Fabric discord server and on the Emotecraft discord server
 
-and an example image:D
+and an example image:D  
 ![example](https://raw.githubusercontent.com/KosmX/bendy-lib/master/example.png)

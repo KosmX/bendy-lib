@@ -24,7 +24,7 @@ The api provides a way to spaw a cuboid with priorities, to be multi-mod compati
 
 to swap, you have to create a class from MutableModelPart, and implement the methods.
 
-You don't have to use existing bendebleCuboid objects, you can create your own, BUT it's highly recommend (it's a lot's of work to code a bendable stuff)
+You don't have to use existing bendableCuboid objects, you can create your own, BUT it's highly recommend (it's a lot's of work to code a bendable stuff)
 
 The test mod (an older and modified version of [Emotecraft](https://github.com/kosmx/emotes))
 

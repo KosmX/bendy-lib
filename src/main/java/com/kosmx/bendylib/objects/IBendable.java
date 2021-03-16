@@ -1,0 +1,120 @@
+package com.kosmx.bendylib.objects;
+
+import net.minecraft.client.util.math.Vector3f;
+import net.minecraft.client.util.math.Vector4f;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Matrix3f;
+import net.minecraft.util.math.Matrix4f;
+
+import java.util.function.Consumer;
+
+/**
+ * Bending methods.
+ * Interface to be usable via Mixin
+ */
+public interface IBendable {
+    default Matrix4f applyBend(float bendAxis, float bendValue){
+        Vector3f axis = new Vector3f((float) Math.cos(bendAxis), 0, (float) Math.sin(bendAxis));
+        Matrix3f matrix3f = new Matrix3f(getBendDirection().getRotationQuaternion());
+        axis.transform(matrix3f);
+        Matrix4f transformMatrix = new Matrix4f();
+        transformMatrix.loadIdentity();
+
+        transformMatrix.multiply(Matrix4f.translate(getBendX(), getBendY(), getBendZ()));
+        transformMatrix.multiply(axis.getRadialQuaternion(bendValue));
+        transformMatrix.multiply(Matrix4f.translate(-getBendX(), -getBendY(), -getBendZ()));
+
+        Vector3f directionUnit; //some temporarily variable;
+
+        Plane basePlane = getBasePlane();
+        Plane otherPlane = getOtherSidePlane();
+
+        directionUnit = this.getBendDirection().getUnitVector();
+        directionUnit.cross(axis);
+        //parallel to the bend's axis and to the cube's bend direction
+        Plane bendPlane = new Plane(directionUnit, new Vector3f(this.getBendX(), this.getBendY(), this.getBendZ()));
+        float halfSize = bendHeight()/2;
+
+        iteratePositions(iPosWithOrigin -> {
+            Vector3f newPos = iPosWithOrigin.getOriginalPos();
+            float distFromBend = bendPlane.distanceTo(newPos);
+            float distFromBase = basePlane.distanceTo(newPos);
+            float distFromOther = otherPlane.distanceTo(newPos);
+            double s = Math.tan(bendValue/2)*distFromBend;
+            Vector3f x = getBendDirection().getUnitVector();
+            if(Math.abs(distFromBase) < Math.abs(distFromOther)){
+                x.scale((float) (-distFromBase/halfSize*s));
+                newPos.add(x);
+                Vector4f reposVector = new Vector4f(newPos);
+                reposVector.transform(transformMatrix);
+                newPos = new Vector3f(reposVector.getX(), reposVector.getY(), reposVector.getZ());
+            }
+            else {
+                x.scale((float) (-distFromOther/halfSize*s));
+                newPos.add(x);
+            }
+            iPosWithOrigin.setPos(newPos);
+        });
+
+        return transformMatrix;
+    }
+
+    Direction getBendDirection();
+    float getBendX();
+    float getBendY();
+    float getBendZ();
+    Plane getBasePlane();
+    Plane getOtherSidePlane();
+    void iteratePositions(Consumer<IPosWithOrigin> consumer);
+
+    /**
+     * There are more efficient ways to calculate it
+     * Try to override it (If you have size)
+     * @return the size of the cube
+     */
+    default float bendHeight(){
+        return this.getBasePlane().distanceTo(this.getOtherSidePlane());
+    }
+
+    /**
+     * A plane in the 3d space
+     * form a vector and a position
+     * for distance calculation
+     */
+    class Plane{
+        final Vector3f normal;
+        final float normDistance;
+
+        public Plane(Vector3f normal, Vector3f position){
+            this.normal = normal.copy();
+            this.normal.normalize();
+            this.normDistance = -normal.dot(position);
+        }
+
+        /**
+         * This will return with the SIGNED distance
+         * @param pos some pos
+         * @return the distance between the pos and this plane
+         */
+        public float distanceTo(Vector3f pos){
+            return normal.dot(pos) + normDistance;
+        }
+
+        /**
+         * This will return with the SIGNED distance
+         * @param otherPlane some plane
+         * @return the distance between the two planes. 0 if not parallel
+         */
+        public float distanceTo(Plane otherPlane){
+            Vector3f tmp = this.normal.copy();
+            tmp.cross(otherPlane.normal);
+            //if the lines are parallel
+            if(tmp.dot(tmp) < 0.01){
+                return this.normDistance + this.normal.dot(otherPlane.normal) * otherPlane.normDistance; //if the normals point to the opposite direction
+            }
+            else {
+                return 0;
+            }
+        }
+    }
+}

@@ -160,7 +160,8 @@ public class Emote {
         }
 
         public Pair<Float, Float> getBend(){
-            return new Pair<>(this.axis.getCurrentValue(0, tickDelta), this.bend.getCurrentValue(0, tickDelta));
+            //return new Pair<>(this.axis.getCurrentValue(0, tickDelta), this.bend.getCurrentValue(0, tickDelta));
+            return new Pair<>(0f, getCurrentTick()/64);
         }
 
     }

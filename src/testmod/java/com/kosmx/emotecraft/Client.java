@@ -233,6 +233,7 @@ public class Client implements ClientModInitializer {
         ClientTickEvents.END_CLIENT_TICK.register(minecraftClient -> {
             if(toggleBendParts.wasPressed()){
                 showBendPats = !showBendPats;
+                System.out.println("bend enable: " + showBendPats);
             }
         });
 

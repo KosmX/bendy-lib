@@ -60,10 +60,10 @@ public class PlayerModelMixin<T extends LivingEntity> extends BipedEntityModel<T
         this.mutatedRightPantLeg = new BendableModelPart(this.rightPantLeg, emoteSupplier);
         this.mutatedLeftLeg = new BendableModelPart(this.leftLeg, emoteSupplier);
         this.mutatedLeftPantLeg = new BendableModelPart(this.leftPantLeg, emoteSupplier);
-        mutatedTorso.addCuboid(-4.0F, 0.0F, -2.0F, 8, 12, 4, scale, Direction.DOWN);
+        mutatedTorso.addCuboid(-4, 0, -2, 8, 12, 4, scale, Direction.DOWN);
         mutatedRightLeg.addCuboid(-2, 0, -2, 4, 12, 4, scale, Direction.NORTH);
         mutatedLeftLeg.addCuboid(-2, 0, -2, 4, 12, 4, scale, Direction.SOUTH);
-        mutatedJacket.addCuboid(-4.0F, 0.0F, -2.0F, 8, 12, 4, scale + 0.25f, Direction.DOWN);
+        mutatedJacket.addCuboid(-4, 0, -2, 8, 12, 4, scale + 0.25f, Direction.DOWN);
         mutatedRightPantLeg.addCuboid(-2, 0, -2, 4, 12, 4, scale + 0.25f, Direction.NORTH);
         mutatedLeftPantLeg.addCuboid(-2, 0, -2, 4, 12, 4, scale + 0.25f, Direction.SOUTH);
         if(thinArms){

@@ -7,11 +7,15 @@ buildscript {
 	}
 }
 plugins {
-	id 'fabric-loom' version '0.5-SNAPSHOT'
+	id 'fabric-loom' version '0.6-SNAPSHOT'
 	id 'maven-publish'
 	//id "com.jfrog.bintray" version "1.+"
 }
 apply plugin: 'com.jfrog.bintray'
+
+repositories{
+	jcenter()
+}
 
 boolean keys_imported = new File("keys.properties").exists()
 
@@ -71,9 +75,9 @@ dependencies {
 
 	implementation 'com.google.code.gson:gson:2.8.5' //GSon serializer
 
-	afterEvaluate {
-		testmodCompile( project(":").sourceSets.testmod.output)
-	}
+	//afterEvaluate {
+	//	testmodCompile( project(":").sourceSets.testmod.output)
+	//}
 }
 
 processResources {

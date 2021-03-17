@@ -66,6 +66,7 @@ public class BendableCuboid implements ICuboid, IBendable, IterableRePos {
         this.applyBend(0, 0);//Init values to render
     }
 
+    @Deprecated //the old constructor
     public static BendableCuboid newBendableCuboid(int textureOffsetU, int textureOffsetV, int x, int y, int z, int sizeX, int sizeY, int sizeZ, boolean mirror, int textureWidth, int textureHeight, Direction direction, float extraX, float extraY, float extraZ) {
         Builder builder = new Builder();
         builder.v = textureOffsetV;
@@ -142,7 +143,7 @@ public class BendableCuboid implements ICuboid, IBendable, IterableRePos {
         public int x, y, z, sizeX, sizeY, sizeZ;
         public float extraX, extraY, extraZ;
         public int u, v;
-        public boolean mirror;
+        public boolean mirror = false;
         public int textureWidth, textureHeight; //That will be int
         public Direction direction;
         //public float bendX, bendY, bendZ;

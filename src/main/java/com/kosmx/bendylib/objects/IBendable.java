@@ -13,6 +13,14 @@ import java.util.function.Consumer;
  * Interface to be usable via Mixin
  */
 public interface IBendable {
+
+    /**
+     * Applies the transformation to every position in posSupplier
+     * @param bendAxis axis for the bend
+     * @param bendValue bend value
+     * @param posSupplier iterable positions
+     * @return the used transformation matrix
+     */
     default Matrix4f applyBend(float bendAxis, float bendValue, IterableRePos posSupplier){
         Vector3f axis = new Vector3f((float) Math.cos(bendAxis), 0, (float) Math.sin(bendAxis));
         Matrix3f matrix3f = new Matrix3f(getBendDirection().getRotationQuaternion());
@@ -60,6 +68,11 @@ public interface IBendable {
     }
 
     Direction getBendDirection();
+
+    /**
+     * center x
+     * @return x
+     */
     float getBendX();
     float getBendY();
     float getBendZ();

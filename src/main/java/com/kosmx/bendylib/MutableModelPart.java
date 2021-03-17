@@ -66,9 +66,7 @@ public abstract class MutableModelPart extends ModelPart {
     }
 
     protected void renderICuboids(MatrixStack.Entry matrices, VertexConsumer vertexConsumer, int light, int overlay, float red, float green, float blue, float alpha) {
-        this.iCuboids.forEach((cuboid)->{
-            cuboid.render(matrices, vertexConsumer, red, green, blue, alpha, light, overlay);
-        });
+        this.iCuboids.forEach((cuboid)-> cuboid.render(matrices, vertexConsumer, red, green, blue, alpha, light, overlay));
     }
 
     public void addICuboid(ICuboid cuboid){
@@ -98,7 +96,22 @@ public abstract class MutableModelPart extends ModelPart {
 
     //The Bendable cuboid generator code
     public BendableCuboid createCuboid(int x, int y, int z, int sizeX, int sizeY, int sizeZ, float extraX, float extraY, float extraZ, Direction direction){
-        return BendableCuboid.newBendableCuboid(this.textureOffsetU, this.textureOffsetV, x, y, z, sizeX, sizeY, sizeZ, false, (int) this.textureWidth, (int) this.textureHeight, direction, extraX, extraY, extraZ);
+        BendableCuboid.Builder builder = new BendableCuboid.Builder();
+        builder.x = x;
+        builder.y = y;
+        builder.z = z;
+        builder.sizeX = sizeX;
+        builder.sizeY = sizeY;
+        builder.sizeZ = sizeZ;
+        builder.extraX = extraX;
+        builder.extraY = extraY;
+        builder.extraZ = extraZ;
+        builder.direction = direction;
+        builder.textureWidth = (int) this.textureWidth;
+        builder.textureHeight = (int) this.textureHeight;
+        builder.u = textureOffsetU;
+        builder.v = textureOffsetV;
+        return builder.build();
     }
     public MutableModelPart addCuboid(int x, int y, int z, int sizeX, int sizeY, int sizeZ, float extraX, float extraY, float extraZ, Direction direction){
         this.iCuboids.add(this.createCuboid(x, y, z, sizeX, sizeY, sizeZ, extraX, extraY, extraZ, direction));

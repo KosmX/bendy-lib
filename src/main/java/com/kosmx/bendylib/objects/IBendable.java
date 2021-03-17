@@ -13,7 +13,7 @@ import java.util.function.Consumer;
  * Interface to be usable via Mixin
  */
 public interface IBendable {
-    default Matrix4f applyBend(float bendAxis, float bendValue){
+    default Matrix4f applyBend(float bendAxis, float bendValue, IterableRePos posSupplier){
         Vector3f axis = new Vector3f((float) Math.cos(bendAxis), 0, (float) Math.sin(bendAxis));
         Matrix3f matrix3f = new Matrix3f(getBendDirection().getRotationQuaternion());
         axis.transform(matrix3f);
@@ -35,7 +35,7 @@ public interface IBendable {
         Plane bendPlane = new Plane(directionUnit, new Vector3f(this.getBendX(), this.getBendY(), this.getBendZ()));
         float halfSize = bendHeight()/2;
 
-        iteratePositions(iPosWithOrigin -> {
+        posSupplier.iteratePositions(iPosWithOrigin -> {
             Vector3f newPos = iPosWithOrigin.getOriginalPos();
             float distFromBend = bendPlane.distanceTo(newPos);
             float distFromBase = basePlane.distanceTo(newPos);
@@ -65,7 +65,6 @@ public interface IBendable {
     float getBendZ();
     Plane getBasePlane();
     Plane getOtherSidePlane();
-    void iteratePositions(Consumer<IPosWithOrigin> consumer);
 
     /**
      * There are more efficient ways to calculate it

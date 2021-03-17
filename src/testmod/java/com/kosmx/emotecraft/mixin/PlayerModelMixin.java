@@ -67,16 +67,16 @@ public class PlayerModelMixin<T extends LivingEntity> extends BipedEntityModel<T
         mutatedRightPantLeg.addCuboid(-2, 0, -2, 4, 12, 4, scale + 0.25f, Direction.NORTH);
         mutatedLeftPantLeg.addCuboid(-2, 0, -2, 4, 12, 4, scale + 0.25f, Direction.SOUTH);
         if(thinArms){
-            mutatedLeftArm.addCuboid(-1, -2, -2, 3, 12, 4, scale, Direction.WEST);
-            mutatedRightArm.addCuboid(-2, -2, -2, 3, 12, 4, scale, Direction.EAST);
-            mutatedLeftSleeve.addCuboid(-1, -2, -2, 3, 12, 4, scale + 0.25f, Direction.WEST);
-            mutatedRightSleeve.addCuboid(-2, -2, -2, 3, 12, 4, scale + 0.25f, Direction.EAST);
+            mutatedLeftArm.addCuboid(-1, -2, -2, 3, 12, 4, scale, Direction.UP);
+            mutatedRightArm.addCuboid(-2, -2, -2, 3, 12, 4, scale, Direction.UP);
+            mutatedLeftSleeve.addCuboid(-1, -2, -2, 3, 12, 4, scale + 0.25f, Direction.UP);
+            mutatedRightSleeve.addCuboid(-2, -2, -2, 3, 12, 4, scale + 0.25f, Direction.UP);
         }
         else {
-            mutatedLeftArm.addCuboid(-1, -2, -2, 4, 12, 4, scale, Direction.WEST);
-            mutatedRightArm.addCuboid(-3, -2, -2, 4, 12, 4, scale, Direction.EAST);
-            mutatedLeftSleeve.addCuboid(-1, -2, -2, 4, 12, 4, scale + 0.25f, Direction.WEST);
-            mutatedRightSleeve.addCuboid(-3, -2, -2, 4, 12, 4, scale + 0.25f, Direction.EAST);
+            mutatedLeftArm.addCuboid(-1, -2, -2, 4, 12, 4, scale, Direction.UP);
+            mutatedRightArm.addCuboid(-3, -2, -2, 4, 12, 4, scale, Direction.UP);
+            mutatedLeftSleeve.addCuboid(-1, -2, -2, 4, 12, 4, scale + 0.25f, Direction.UP);
+            mutatedRightSleeve.addCuboid(-3, -2, -2, 4, 12, 4, scale + 0.25f, Direction.UP);
         }
         //TODO some bendable armor...
     }

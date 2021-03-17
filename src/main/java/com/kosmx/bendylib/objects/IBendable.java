@@ -43,9 +43,11 @@ public interface IBendable {
         Plane bendPlane = new Plane(directionUnit, new Vector3f(this.getBendX(), this.getBendY(), this.getBendZ()));
         float halfSize = bendHeight()/2;
 
+        boolean bl = getBendDirection() == Direction.UP || getBendDirection() == Direction.SOUTH || getBendDirection() == Direction.EAST;
+
         posSupplier.iteratePositions(iPosWithOrigin -> {
             Vector3f newPos = iPosWithOrigin.getOriginalPos();
-            float distFromBend = bendPlane.distanceTo(newPos);
+            float distFromBend = bl ? -bendPlane.distanceTo(newPos) : bendPlane.distanceTo(newPos);
             float distFromBase = basePlane.distanceTo(newPos);
             float distFromOther = otherPlane.distanceTo(newPos);
             double s = Math.tan(bendValue/2)*distFromBend;

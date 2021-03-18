@@ -73,7 +73,7 @@ dependencies {
 
 	testmodCompile sourceSets.main.output
 
-	implementation 'com.google.code.gson:gson:2.8.5' //GSon serializer
+	implementation 'com.google.code.gson:gson:2.8.6' //GSon serializer
 
 	//afterEvaluate {
 	//	testmodCompile( project(":").sourceSets.testmod.output)

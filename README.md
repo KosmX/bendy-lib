@@ -5,9 +5,9 @@ setup with gradle:
 
 ```groovy
 dependencies {
-  (...)
-	modImplementation "com.kosmx.bendylib:bendy-lib:${project.bendylib_version}"
-	include "com.kosmx.bendylib:bendy-lib:${project.bendylib_version}"
+  (...) 
+    modImplementation "com.kosmx.bendylib:bendy-lib:${project.bendylib_version}"
+    include "com.kosmx.bendylib:bendy-lib:${project.bendylib_version}"
     //you can find the latest version in GitHub packages
 }
 ```

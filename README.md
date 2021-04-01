@@ -11,6 +11,7 @@ dependencies {
     //you can find the latest version in GitHub packages
 }
 ```
+You can use the artifact from `jcenter`, I'll move as soon as I find where to go.
 
 designed to be able to swap and bend cuboids.
 

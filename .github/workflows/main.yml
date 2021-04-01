@@ -25,6 +25,6 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Publish package
-        run: gradle publish
+        run: gradle publish --no-daemon
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

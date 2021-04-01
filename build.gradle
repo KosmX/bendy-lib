@@ -1,22 +1,10 @@
-
 plugins {
 	id 'fabric-loom' version '0.6-SNAPSHOT'
 	id 'maven-publish'
-	//id "com.jfrog.bintray" version "1.+"
 }
 
-repositories{
-	jcenter()
-}
-
-boolean keys_imported = new File("keys.properties").exists()
-
-if(keys_imported) {
-	file("keys.properties").withReader {
-		Properties props = new Properties()
-		props.load(it)
-		project.ext.keys = props
-	}
+repositories {
+	maven { url "https://maven.shedaniel.me/" }
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
@@ -59,20 +47,10 @@ dependencies {
 	//include "io.github.prospector:modmenu:${project.modmenu_version}"
 	modCompileOnly "me.shedaniel.cloth:config-2:${project.cloth_version}"
 	modRuntime "me.shedaniel.cloth:config-2:${project.cloth_version}"
-	//include "me.shedaniel.cloth:config-2:${project.cloth_version}"
-
-	//implementation files("bendy-lib-0.0.0-dev.jar")
-	//runtimeOnly(files("bendy-lib-0.0.0-dev.jar"))
-
-	//include(files("bendy-lib-0.0.0-dev.jar"))
-
 	testmodCompile sourceSets.main.output
 
 	implementation 'com.google.code.gson:gson:2.8.5' //GSon serializer
 
-	//afterEvaluate {
-	//	testmodCompile( project(":").sourceSets.testmod.output)
-	//}
 }
 
 processResources {

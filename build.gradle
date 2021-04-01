@@ -1,17 +1,9 @@
-buildscript {
-	repositories {
-		jcenter()
-	}
-	dependencies {
-		classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.+'
-	}
-}
+
 plugins {
 	id 'fabric-loom' version '0.6-SNAPSHOT'
 	id 'maven-publish'
 	//id "com.jfrog.bintray" version "1.+"
 }
-apply plugin: 'com.jfrog.bintray'
 
 repositories{
 	jcenter()
@@ -135,35 +127,17 @@ publishing {
 	// select the repositories you want to publish to
 	repositories {
 		// uncomment to publish to the local maven
-		mavenLocal()
+		// mavenLocal()
+		maven {
+			name = "GitHubPackages"
+			url = "https://maven.pkg.github.com/kosmx/bendy-lib"
+			credentials {
+				username = System.getenv("GITHUB_ACTOR")
+				password = System.getenv("GITHUB_TOKEN")
+			}
+		}
 	}
 	dependencies{
 		compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
 	}
-}
-
-
-bintray {
-	if(keys_imported) {
-		user = project.keys.bintray_user
-		key = project.keys.bintray_key
-	}
-	pkg {
-		repo = 'bendy-lib'
-		name = 'bendy-lib'
-		//userOrg = 'kosmx'
-		licenses = ['CC0-1.0']
-		vcsUrl = 'https://github.com/KosmX/bendy-lib.git'
-		version {
-			version {
-				name = project.version
-				desc = 'Minecraft Fabric library'
-				githubRepo = "kosmx/bendy-lib"
-				released  = new Date()
-				vcsTag = project.version
-				//attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin']
-			}
-		}
-	}
-	publications = ['mavenJava']
 }

@@ -60,10 +60,13 @@ dependencies {
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	modImplementation "io.github.prospector:modmenu:${project.modmenu_version}"
+	modCompileOnly "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	modRuntime "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	modCompileOnly "io.github.prospector:modmenu:${project.modmenu_version}"
+	modRuntime "io.github.prospector:modmenu:${project.modmenu_version}"
 	//include "io.github.prospector:modmenu:${project.modmenu_version}"
-	modImplementation "me.shedaniel.cloth:config-2:${project.cloth_version}"
+	modCompileOnly "me.shedaniel.cloth:config-2:${project.cloth_version}"
+	modRuntime "me.shedaniel.cloth:config-2:${project.cloth_version}"
 	//include "me.shedaniel.cloth:config-2:${project.cloth_version}"
 
 	//implementation files("bendy-lib-0.0.0-dev.jar")
@@ -132,7 +135,7 @@ publishing {
 	// select the repositories you want to publish to
 	repositories {
 		// uncomment to publish to the local maven
-		// mavenLocal()
+		mavenLocal()
 	}
 	dependencies{
 		compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.0'

@@ -4,16 +4,11 @@ FabricMC library
 setup with gradle:
 
 ```groovy
-repositories{
-  (...)
-	jcenter()
-}
-(...)
 dependencies {
   (...)
 	modImplementation "com.kosmx.bendylib:bendy-lib:${project.bendylib_version}"
 	include "com.kosmx.bendylib:bendy-lib:${project.bendylib_version}"
-
+    //you can find the latest version in GitHub packages
 }
 ```
 
@@ -32,4 +27,6 @@ Sorry for this not finished documentation...
 You can find me on the Fabric discord server and on the Emotecraft discord server
 
 and an example image:D  
-![example](https://raw.githubusercontent.com/KosmX/bendy-lib/master/example.png)
+![example](https://raw.githubusercontent.com/KosmX/bendy-lib/master/example.png)  
+  
+The release branch contains the source of the latest release.

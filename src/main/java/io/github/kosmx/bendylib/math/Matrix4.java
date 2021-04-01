@@ -1,7 +1,6 @@
-package com.kosmx.bendylib.math;
+package io.github.kosmx.bendylib.math;
 
 import net.minecraft.client.util.math.Vector3f;
-import net.minecraft.client.util.math.Vector4f;
 import net.minecraft.util.math.Matrix4f;
 
 public class Matrix4 extends Matrix4f {

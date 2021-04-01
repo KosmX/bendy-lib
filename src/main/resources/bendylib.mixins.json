@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "com.kosmx.bendylib.mixin",
+  "package": "io.github.kosmx.bendylib.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
   ],

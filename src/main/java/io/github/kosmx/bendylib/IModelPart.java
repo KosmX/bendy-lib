@@ -1,4 +1,4 @@
-package com.kosmx.bendylib;
+package io.github.kosmx.bendylib;
 
 import javax.annotation.Nullable;
 

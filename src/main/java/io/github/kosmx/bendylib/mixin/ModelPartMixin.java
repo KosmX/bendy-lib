@@ -1,8 +1,8 @@
-package com.kosmx.bendylib.mixin;
+package io.github.kosmx.bendylib.mixin;
 
 
-import com.kosmx.bendylib.IModelPart;
-import com.kosmx.bendylib.MutableModelPart;
+import io.github.kosmx.bendylib.IModelPart;
+import io.github.kosmx.bendylib.MutableModelPart;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectList;
 import net.minecraft.client.model.ModelPart;

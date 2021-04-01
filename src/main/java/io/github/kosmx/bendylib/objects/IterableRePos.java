@@ -1,4 +1,4 @@
-package com.kosmx.bendylib.objects;
+package io.github.kosmx.bendylib.objects;
 
 import java.util.function.Consumer;
 

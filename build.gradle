@@ -118,10 +118,12 @@ if (secretPropsFile.exists()) {
 	ext["ossrhPassword"] = System.getenv('OSSRH_PASSWORD')
 	ext["sonatypeStagingProfileId"] = System.getenv('SONATYPE_STAGING_PROFILE_ID')
 }
-
-signing{
-	sign publishing.publications
+signing {
+	if (ossrhPassword != null) {
+		sign publishing.publications
+	}
 }
+
 
 // configure the maven publication
 publishing {
@@ -137,10 +139,10 @@ publishing {
 			artifact(sourcesJar) {
 				builtBy remapSourcesJar
 			}
-
+			artifact(javadocJar)
 			pom{
 				name = "bendy-lib"
-				description = "Minecraft FabricMC library"
+				description = "Minecraft FabricMC model render library"
 
 				developers {
 					developer {
@@ -150,9 +152,17 @@ publishing {
 					}
 				}
 
+				licenses{
+					license{
+						name = "Creative Commons Attribution 4.0 International Public License"
+						url = "https://creativecommons.org/licenses/by/4.0/legalcode"
+					}
+				}
+
 				scm {
 					connection = 'scm:git:github.com/kosmx/bendy-lib.git'
-					url = 'https://github.com/KosmX/bendy-lib.git'
+					developerConnection = 'scm:git:github.com/kosmx/bendy-lib.git'
+					url = 'https://github.com/KosmX/bendy-lib'
 				}
 			}
 		}
@@ -161,18 +171,30 @@ publishing {
 	// select the repositories you want to publish to
 	repositories {
 		// uncomment to publish to the local maven
-		mavenLocal()
-		/*
-		maven {
-			name = "GitHubPackages"
-			url = "https://maven.pkg.github.com/kosmx/bendy-lib"
-			credentials {
-				username = System.getenv("GITHUB_ACTOR")
-				password = System.getenv("GITHUB_TOKEN")
+		if(ossrhPassword != null && false) {
+			maven {
+				name = "mavenCentral" //:D
+				url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+				credentials {
+					username ossrhUsername
+					password ossrhPassword
+				}
+
 			}
 		}
-
-		 */
+		if(System.getenv("GITHUB_ACTOR") != null) {
+			maven {
+				name = "GitHubPackages"
+				url = "https://maven.pkg.github.com/kosmx/bendy-lib"
+				credentials {
+					username = System.getenv("GITHUB_ACTOR")
+					password = System.getenv("GITHUB_TOKEN")
+				}
+			}
+		}
+		else {
+			mavenLocal()
+		}
 	}
 	dependencies{
 		compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'

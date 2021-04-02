@@ -1,7 +1,7 @@
 package io.github.kosmx.bendylib;
 
-import io.github.kosmx.bendylib.objects.BendableCuboid;
-import io.github.kosmx.bendylib.objects.ICuboid;
+import io.github.kosmx.bendylib.impl.BendableCuboid;
+import io.github.kosmx.bendylib.impl.ICuboid;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectList;
 import net.minecraft.client.model.Model;

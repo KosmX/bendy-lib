@@ -4,6 +4,8 @@ build/
 out/
 classes/
 
+keys.properties
+
 #IDEA
 .idea/
 *.iml

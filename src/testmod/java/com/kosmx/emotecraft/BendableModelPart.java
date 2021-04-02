@@ -2,7 +2,7 @@ package com.kosmx.emotecraft;
 
 import io.github.kosmx.bendylib.IModelPart;
 import io.github.kosmx.bendylib.MutableModelPart;
-import io.github.kosmx.bendylib.objects.BendableCuboid;
+import io.github.kosmx.bendylib.impl.BendableCuboid;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.Matrix4f;

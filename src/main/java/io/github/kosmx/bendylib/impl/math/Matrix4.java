@@ -1,4 +1,4 @@
-package io.github.kosmx.bendylib.math;
+package io.github.kosmx.bendylib.impl.math;
 
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.util.math.Matrix4f;

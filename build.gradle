@@ -143,7 +143,7 @@ publishing {
 			pom{
 				name = "bendy-lib"
 				description = "Minecraft FabricMC model render library"
-
+				url = 'https://github.com/KosmX/bendy-lib'
 				developers {
 					developer {
 						id = 'kosmx'
@@ -174,7 +174,7 @@ publishing {
 		if(ossrhPassword != null && false) {
 			maven {
 				name = "mavenCentral" //:D
-				url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+				url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
 				credentials {
 					username ossrhUsername
 					password ossrhPassword

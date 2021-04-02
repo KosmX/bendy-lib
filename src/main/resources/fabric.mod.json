@@ -9,8 +9,7 @@
   ],
   "contributors": [],
   "contact": {},
-  "license": "MIT",
-  "icon": "assets/bendy-lib/icon.png",
+  "license": "CC0",
   "environment": "client",
   "accessWidener": "bendylib.accesswidener",
   "entrypoints": {

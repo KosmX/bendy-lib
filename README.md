@@ -4,22 +4,19 @@ FabricMC library
 setup with gradle:
 
 ```groovy
-repositories{
-  (...)
-	jcenter()
-}
-(...)
 dependencies {
-  (...)
-	modImplementation "com.kosmx.bendylib:bendy-lib:${project.bendylib_version}"
-	include "com.kosmx.bendylib:bendy-lib:${project.bendylib_version}"
-
+  (...) 
+    modImplementation "io.github.kosmx.bendylib:bendy-lib:${project.bendylib_version}"
+    include "io.github.kosmx.bendylib:bendy-lib:${project.bendylib_version}"
+    //you can find the latest version in GitHub packages
+    //You may use com.kosmx.bendylib group id if you are using jcenter (PLS don't)
 }
 ```
+You can use the artifact from `jcenter`, I'll move to Maven Central soon
 
 designed to be able to swap and bend cuboids.
 
-The api provides a way to spaw a cuboid with priorities, to be multi-mod compatible
+The api provides a way to swap a cuboid with priorities, to be multi-mod compatible
 (bend like in Mo'bends)
 
 to swap, you have to create a class from MutableModelPart, and implement the methods.
@@ -32,4 +29,6 @@ Sorry for this not finished documentation...
 You can find me on the Fabric discord server and on the Emotecraft discord server
 
 and an example image:D  
-![example](https://raw.githubusercontent.com/KosmX/bendy-lib/master/example.png)
+![example](https://raw.githubusercontent.com/KosmX/bendy-lib/dev/example.png)  
+  
+The release branch contains the source of the latest release.

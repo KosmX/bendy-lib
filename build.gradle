@@ -1,7 +1,10 @@
 plugins {
 	id 'fabric-loom' version '0.6-SNAPSHOT'
 	id 'maven-publish'
+	id 'signing'
 }
+
+
 
 repositories {
 	maven { url "https://maven.shedaniel.me/" }
@@ -85,6 +88,43 @@ jar {
 	from "LICENSE"
 }
 
+task javadocJar(type: Jar, dependsOn: classes){
+	classifier = "javadoc"
+	from javadoc
+}
+
+ext["signing.keyId"] = ''
+ext["signing.password"] = ''
+ext["signing.secretKeyRingFile"] = ''
+ext["ossrhUsername"] = ''
+ext["ossrhPassword"] = ''
+ext["sonatypeStagingProfileId"] = ''
+
+//copyed from https://getstream.io/blog/publishing-libraries-to-mavencentral-2021/
+File secretPropsFile = project.rootProject.file('keys.properties')
+if (secretPropsFile.exists()) {
+	Properties p = new Properties()
+	new FileInputStream(secretPropsFile).withCloseable { is ->
+		p.load(is)
+	}
+	p.each { name, value ->
+		ext[name] = value
+	}
+} else {
+	ext["signing.keyId"] = System.getenv('SIGNING_KEY_ID')
+	ext["signing.password"] = System.getenv('SIGNING_PASSWORD')
+	ext["signing.secretKeyRingFile"] = System.getenv('SIGNING_SECRET_KEY_RING_FILE')
+	ext["ossrhUsername"] = System.getenv('OSSRH_USERNAME')
+	ext["ossrhPassword"] = System.getenv('OSSRH_PASSWORD')
+	ext["sonatypeStagingProfileId"] = System.getenv('SONATYPE_STAGING_PROFILE_ID')
+}
+signing {
+	if (ossrhPassword != null) {
+		sign publishing.publications
+	}
+}
+
+
 // configure the maven publication
 publishing {
 	publications {
@@ -99,20 +139,61 @@ publishing {
 			artifact(sourcesJar) {
 				builtBy remapSourcesJar
 			}
+			artifact(javadocJar)
+			pom{
+				name = "bendy-lib"
+				description = "Minecraft FabricMC model render library"
+
+				developers {
+					developer {
+						id = 'kosmx'
+						name = 'KosmX'
+						email = 'kosmx.mc@gmail.com'
+					}
+				}
+
+				licenses{
+					license{
+						name = "Creative Commons Attribution 4.0 International Public License"
+						url = "https://creativecommons.org/licenses/by/4.0/legalcode"
+					}
+				}
+
+				scm {
+					connection = 'scm:git:github.com/kosmx/bendy-lib.git'
+					developerConnection = 'scm:git:github.com/kosmx/bendy-lib.git'
+					url = 'https://github.com/KosmX/bendy-lib'
+				}
+			}
 		}
 	}
 
 	// select the repositories you want to publish to
 	repositories {
 		// uncomment to publish to the local maven
-		// mavenLocal()
-		maven {
-			name = "GitHubPackages"
-			url = "https://maven.pkg.github.com/kosmx/bendy-lib"
-			credentials {
-				username = System.getenv("GITHUB_ACTOR")
-				password = System.getenv("GITHUB_TOKEN")
+		if(ossrhPassword != null && false) {
+			maven {
+				name = "mavenCentral" //:D
+				url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+				credentials {
+					username ossrhUsername
+					password ossrhPassword
+				}
+
 			}
+		}
+		if(System.getenv("GITHUB_ACTOR") != null) {
+			maven {
+				name = "GitHubPackages"
+				url = "https://maven.pkg.github.com/kosmx/bendy-lib"
+				credentials {
+					username = System.getenv("GITHUB_ACTOR")
+					password = System.getenv("GITHUB_TOKEN")
+				}
+			}
+		}
+		else {
+			mavenLocal()
 		}
 	}
 	dependencies{

@@ -1,19 +1,20 @@
 package io.github.kosmx.bendylib.impl;
 
-import net.minecraft.client.util.math.Vector3f;
+
+import net.minecraft.util.math.Vec3f;
 
 import java.util.Objects;
 
 public class RememberingPos implements IPosWithOrigin{
-    final Vector3f originPos;
-    Vector3f currentPos = null;
+    final Vec3f originPos;
+    Vec3f currentPos = null;
 
-    public RememberingPos(Vector3f originPos) {
+    public RememberingPos(Vec3f originPos) {
         this.originPos = originPos;
     }
 
     public RememberingPos(float x, float y, float z){
-        this(new Vector3f(x, y, z));
+        this(new Vec3f(x, y, z));
     }
 
     @Override
@@ -39,17 +40,17 @@ public class RememberingPos implements IPosWithOrigin{
      * @return copy of the original pos
      */
     @Override
-    public Vector3f getOriginalPos() {
+    public Vec3f getOriginalPos() {
         return originPos.copy(); //I won't let anyone to change it.
     }
 
     @Override
-    public Vector3f getPos() {
+    public Vec3f getPos() {
         return currentPos;
     }
 
     @Override
-    public void setPos(Vector3f vector3f) {
+    public void setPos(Vec3f vector3f) {
         this.currentPos = vector3f;
     }
 }

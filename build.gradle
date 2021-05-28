@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.6-SNAPSHOT'
+	id 'fabric-loom' version '0.8-SNAPSHOT'
 	id 'maven-publish'
 	id 'signing'
 }
@@ -8,10 +8,14 @@ plugins {
 
 repositories {
 	maven { url "https://maven.shedaniel.me/" }
+	maven{
+		name "TerraformersMC"
+		url "https://maven.terraformersmc.com/releases/"
+	}
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_16
+targetCompatibility = JavaVersion.VERSION_16
 
 archivesBaseName = project.archives_base_name
 version = project.mod_version
@@ -45,14 +49,19 @@ dependencies {
 
 	modCompileOnly "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	modRuntime "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	modCompileOnly "io.github.prospector:modmenu:${project.modmenu_version}"
-	modRuntime "io.github.prospector:modmenu:${project.modmenu_version}"
+	testmodImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
+	testmodRuntimeOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
 	//include "io.github.prospector:modmenu:${project.modmenu_version}"
-	modCompileOnly "me.shedaniel.cloth:config-2:${project.cloth_version}"
-	modRuntime "me.shedaniel.cloth:config-2:${project.cloth_version}"
-	testmodCompile sourceSets.main.output
+	testmodImplementation("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_version}"){
+		exclude(group: "net.fabricmc.fabric-api")
+	}
+
+	//testmodRuntimeOnly "me.shedaniel.cloth:config-2:${project.cloth_version}"
+	//testmodCompile sourceSets.main.output
 
 	implementation 'com.google.code.gson:gson:2.8.5' //GSon serializer
+
+	compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
 
 }
 
@@ -80,7 +89,7 @@ tasks.withType(JavaCompile) {
 // if it is present.
 // If you remove this task, sources will not be generated.
 task sourcesJar(type: Jar, dependsOn: classes) {
-	classifier = "sources"
+	classifier "sources"
 	from sourceSets.main.allSource
 }
 
@@ -89,7 +98,7 @@ jar {
 }
 
 task javadocJar(type: Jar, dependsOn: classes){
-	classifier = "javadoc"
+	classifier "javadoc"
 	from javadoc
 }
 
@@ -195,8 +204,5 @@ publishing {
 		else {
 			mavenLocal()
 		}
-	}
-	dependencies{
-		compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
 	}
 }

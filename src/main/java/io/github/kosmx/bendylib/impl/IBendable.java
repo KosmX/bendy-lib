@@ -1,10 +1,6 @@
 package io.github.kosmx.bendylib.impl;
 
-import net.minecraft.client.util.math.Vector3f;
-import net.minecraft.client.util.math.Vector4f;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Matrix3f;
-import net.minecraft.util.math.Matrix4f;
+import net.minecraft.util.math.*;
 
 /**
  * Bending methods.
@@ -20,7 +16,7 @@ public interface IBendable {
      * @return the used transformation matrix
      */
     default Matrix4f applyBend(float bendAxis, float bendValue, IterableRePos posSupplier){
-        Vector3f axis = new Vector3f((float) Math.cos(bendAxis), 0, (float) Math.sin(bendAxis));
+        Vec3f axis = new Vec3f((float) Math.cos(bendAxis), 0, (float) Math.sin(bendAxis));
         Matrix3f matrix3f = new Matrix3f(getBendDirection().getRotationQuaternion());
         axis.transform(matrix3f);
         Matrix4f transformMatrix = new Matrix4f();
@@ -30,7 +26,7 @@ public interface IBendable {
         transformMatrix.multiply(axis.getRadialQuaternion(bendValue));
         transformMatrix.multiply(Matrix4f.translate(-getBendX(), -getBendY(), -getBendZ()));
 
-        Vector3f directionUnit; //some temporarily variable;
+        Vec3f directionUnit; //some temporarily variable;
 
         Plane basePlane = getBasePlane();
         Plane otherPlane = getOtherSidePlane();
@@ -38,24 +34,24 @@ public interface IBendable {
         directionUnit = this.getBendDirection().getUnitVector();
         directionUnit.cross(axis);
         //parallel to the bend's axis and to the cube's bend direction
-        Plane bendPlane = new Plane(directionUnit, new Vector3f(this.getBendX(), this.getBendY(), this.getBendZ()));
+        Plane bendPlane = new Plane(directionUnit, new Vec3f(this.getBendX(), this.getBendY(), this.getBendZ()));
         float halfSize = bendHeight()/2;
 
         boolean bl = getBendDirection() == Direction.UP || getBendDirection() == Direction.SOUTH || getBendDirection() == Direction.EAST;
 
         posSupplier.iteratePositions(iPosWithOrigin -> {
-            Vector3f newPos = iPosWithOrigin.getOriginalPos();
+            Vec3f newPos = iPosWithOrigin.getOriginalPos();
             float distFromBend = bl ? -bendPlane.distanceTo(newPos) : bendPlane.distanceTo(newPos);
             float distFromBase = basePlane.distanceTo(newPos);
             float distFromOther = otherPlane.distanceTo(newPos);
             double s = Math.tan(bendValue/2)*distFromBend;
-            Vector3f x = getBendDirection().getUnitVector();
+            Vec3f x = getBendDirection().getUnitVector();
             if(Math.abs(distFromBase) < Math.abs(distFromOther)){
                 x.scale((float) (-distFromBase/halfSize*s));
                 newPos.add(x);
                 Vector4f reposVector = new Vector4f(newPos);
                 reposVector.transform(transformMatrix);
-                newPos = new Vector3f(reposVector.getX(), reposVector.getY(), reposVector.getZ());
+                newPos = new Vec3f(reposVector.getX(), reposVector.getY(), reposVector.getZ());
             }
             else {
                 x.scale((float) (-distFromOther/halfSize*s));
@@ -94,10 +90,10 @@ public interface IBendable {
      * for distance calculation
      */
     class Plane{
-        final Vector3f normal;
+        final Vec3f normal;
         final float normDistance;
 
-        public Plane(Vector3f normal, Vector3f position){
+        public Plane(Vec3f normal, Vec3f position){
             this.normal = normal.copy();
             this.normal.normalize();
             this.normDistance = -normal.dot(position);
@@ -108,7 +104,7 @@ public interface IBendable {
          * @param pos some pos
          * @return the distance between the pos and this plane
          */
-        public float distanceTo(Vector3f pos){
+        public float distanceTo(Vec3f pos){
             return normal.dot(pos) + normDistance;
         }
 
@@ -118,7 +114,7 @@ public interface IBendable {
          * @return the distance between the two planes. 0 if not parallel
          */
         public float distanceTo(Plane otherPlane){
-            Vector3f tmp = this.normal.copy();
+            Vec3f tmp = this.normal.copy();
             tmp.cross(otherPlane.normal);
             //if the lines are parallel
             if(tmp.dot(tmp) < 0.01){

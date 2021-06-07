@@ -116,7 +116,7 @@ public class BendableCuboid implements ICuboid, IBendable, IterableRePos {
         /**
          * Size parameters
          */
-        Direction direction;
+        public Direction direction; //now, way better
 
         public BendableCuboid build(Data data){
             ArrayList<Quad> planes = new ArrayList<>();

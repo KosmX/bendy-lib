@@ -1,4 +1,4 @@
-package io.github.kosmx.bendylib.mixin;
+/*package io.github.kosmx.bendylib.mixin;
 
 
 import io.github.kosmx.bendylib.IModelPart;
@@ -35,7 +35,7 @@ public class ModelPartMixin implements IModelPart {
      * @author KosmX - bendy-lib
      * @param part part, what ypu want to use
      * @return true, if it isn't assigned already.
-     */
+     *
     @Override
     public boolean mutate(MutableModelPart part) {
         if(mutatedParts.contains(part))return false;
@@ -46,7 +46,7 @@ public class ModelPartMixin implements IModelPart {
     /**
      * @param part remove, if this is the active mutated.
      * @return is the action success
-     */
+     *
     @Override
     public boolean removeMutate(MutableModelPart part) {
         return mutatedParts.remove(part);
@@ -56,7 +56,7 @@ public class ModelPartMixin implements IModelPart {
     /**
      * @author KosmX - bendy-lib
      * @return Active, highest priority mutated part, null if no active or empty
-     */
+
     @Nullable
     @Override
     public MutableModelPart getActiveMutatedPart() {
@@ -96,7 +96,7 @@ public class ModelPartMixin implements IModelPart {
 
     /**
      * modified render function. it will be inherited.
-     */
+     *
     @Inject(method = "render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;IIFFFF)V", at = @At(value = "HEAD" ), cancellable = true)
     private void renderInject(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green, float blue, float alpha, CallbackInfo callbackInfo){
         MutableModelPart mutatedPart = this.getActiveMutatedPart();
@@ -110,3 +110,4 @@ public class ModelPartMixin implements IModelPart {
     }
 
 }
+*/

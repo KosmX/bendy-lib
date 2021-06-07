@@ -1,4 +1,4 @@
-package io.github.kosmx.bendylib;
+/*package io.github.kosmx.bendylib;
 
 import io.github.kosmx.bendylib.impl.BendableCuboid;
 import io.github.kosmx.bendylib.impl.ICuboid;
@@ -19,7 +19,7 @@ import javax.annotation.Nullable;
  * {@link IModelPart#removeMutate(MutableModelPart)} to remove
  * You can use is as the default modelPart in a model.
  * This can be used with {@link ICuboid}.
- */
+ *
 public abstract class MutableModelPart extends ModelPart {
 
     @Nullable
@@ -50,7 +50,7 @@ public abstract class MutableModelPart extends ModelPart {
         else return new Cuboid()
     }
 
-     *///TODO don't cause crash
+     //TODO don't cause crash
 
 
 
@@ -78,7 +78,7 @@ public abstract class MutableModelPart extends ModelPart {
      * @return the Priority level. If there is a lower level, that will be applied
      * Mods like Mo'bends should use higher e.g. 5
      * Mods like Emotecraft should use lover e.g. 1
-     */
+     *
     public int getPriority(){
         return 2;
     }
@@ -90,22 +90,25 @@ public abstract class MutableModelPart extends ModelPart {
     /**
      * incompatibility finder tool
      * @return the mod's name or id
-     */
+     *
     public abstract String modId();
 
 
     //The Bendable cuboid generator code
     public BendableCuboid createCuboid(int x, int y, int z, int sizeX, int sizeY, int sizeZ, float extraX, float extraY, float extraZ, Direction direction){
+        ICuboidBuilder.Data data = new ICuboidBuilder.Data();
+        data.x = x;
+        data.y = y;
+        data.z = z;
+        data.sizeX = sizeX;
+        data.sizeY = sizeY;
+        data.sizeZ = sizeZ;
+        data.extraX = extraX;
+        data.extraY = extraY;
+        data.extraZ = extraZ;
+
         BendableCuboid.Builder builder = new BendableCuboid.Builder();
-        builder.x = x;
-        builder.y = y;
-        builder.z = z;
-        builder.sizeX = sizeX;
-        builder.sizeY = sizeY;
-        builder.sizeZ = sizeZ;
-        builder.extraX = extraX;
-        builder.extraY = extraY;
-        builder.extraZ = extraZ;
+
         builder.direction = direction;
         builder.textureWidth = (int) this.textureWidth;
         builder.textureHeight = (int) this.textureHeight;
@@ -125,3 +128,4 @@ public abstract class MutableModelPart extends ModelPart {
         return this.addCuboid(x, y, z, sizeX, sizeY, sizeZ, extra, extra, extra, direction);
     }
 }
+*/

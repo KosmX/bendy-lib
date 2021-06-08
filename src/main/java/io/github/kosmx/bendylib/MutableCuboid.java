@@ -46,7 +46,7 @@ public interface MutableCuboid {
      * @return null, if no registered
      */
     @Nullable
-    ICuboid getAndActivateMutator(String name);
+    ICuboid getAndActivateMutator(@Nullable String name);
 
     void copyStateFrom(MutableCuboid other);
 

@@ -304,4 +304,9 @@ public class BendableCuboid implements ICuboid, IBendable, IterableRePos {
             return vecA.normalize() ? vecA : Direction.NORTH.getUnitVector();
         }
     }
+
+    @Override
+    public boolean disableAfterDraw() {
+        return false;
+    }
 }

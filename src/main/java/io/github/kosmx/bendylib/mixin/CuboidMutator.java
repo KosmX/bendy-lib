@@ -9,7 +9,9 @@ import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Pair;
 import org.jetbrains.annotations.ApiStatus;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -21,6 +23,9 @@ import java.util.HashMap;
 @ApiStatus.Experimental
 public class CuboidMutator implements MutableCuboid {
 
+    @Shadow @Final public float minX;
+    @Shadow @Final public float minY;
+    @Shadow @Final public float minZ;
     //Store the mutators and the mutator builders.
     HashMap<String, ICuboid> mutators = new HashMap<>();
     HashMap<String, ICuboidBuilder> mutatorBuilders = new HashMap<>();
@@ -34,7 +39,7 @@ public class CuboidMutator implements MutableCuboid {
 
     @Inject(method = "<init>", at = @At(value = "RETURN"))
     private void constructor(int u, int v, float x, float y, float z, float sizeX, float sizeY, float sizeZ, float extraX, float extraY, float extraZ, boolean mirror, float textureWidth, float textureHeight, CallbackInfo ci){
-        partData = new ICuboidBuilder.Data(u, v, x, y, z, sizeX, sizeY, sizeZ, extraX, extraY, extraZ, mirror, textureWidth, textureHeight);
+        partData = new ICuboidBuilder.Data(u, v, minX, minY, minZ, sizeX, sizeY, sizeZ, extraX, extraY, extraZ, mirror, textureWidth, textureHeight);
     }
 
 
@@ -74,7 +79,7 @@ public class CuboidMutator implements MutableCuboid {
 
     @Nullable
     @Override
-    public ICuboid getAndActivateMutator(String name) {
+    public ICuboid getAndActivateMutator(@Nullable String name) {
         if(name == null){
             activeMutatorID = null;
             activeMutator = null;

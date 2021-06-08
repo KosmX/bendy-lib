@@ -48,4 +48,6 @@ public interface MutableCuboid {
     @Nullable
     ICuboid getAndActivateMutator(String name);
 
+    void copyStateFrom(MutableCuboid other);
+
 }

@@ -75,6 +75,11 @@ public class CuboidMutator implements MutableCuboid {
     @Nullable
     @Override
     public ICuboid getAndActivateMutator(String name) {
+        if(name == null){
+            activeMutatorID = null;
+            activeMutator = null;
+            return null;
+        }
         if(mutatorBuilders.containsKey(name)){
             if(!mutators.containsKey(name)){
                 mutators.put(name, mutatorBuilders.get(name).build(partData));
@@ -85,12 +90,27 @@ public class CuboidMutator implements MutableCuboid {
         return null;
     }
 
+    @Override
+    public void copyStateFrom(MutableCuboid other) {
+        if(other.getActiveMutator() == null){
+            activeMutator = null;
+            activeMutatorID = null;
+        }
+        else {
+            if(this.getAndActivateMutator(other.getActiveMutator().getLeft()) != null){
+                activeMutator.copyState(other.getActiveMutator().getRight());
+            }
+        }
+    }
+
     @Inject(method = "renderCuboid", at = @At(value = "HEAD"), cancellable = true)
     private void renderRedirect(MatrixStack.Entry entry, VertexConsumer vertexConsumer, int light, int overlay, float red, float green, float blue, float alpha, CallbackInfo ci){
         if(getActiveMutator() != null){
             getActiveMutator().getRight().render(entry, vertexConsumer, red, green, blue, alpha, light, overlay);
-            activeMutator = null; //mutator lives only for one render cycle
-            activeMutatorID = null;
+            if(getActiveMutator().getRight().disableAfterDraw()) {
+                activeMutator = null; //mutator lives only for one render cycle
+                activeMutatorID = null;
+            }
             ci.cancel();
         }
     }

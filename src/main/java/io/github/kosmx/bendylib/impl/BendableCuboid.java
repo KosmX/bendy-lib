@@ -41,6 +41,8 @@ public class BendableCuboid implements ICuboid, IBendable, IterableRePos {
     protected final Plane otherPlane;
     protected final float fullSize;
 
+    private float bend, bendAxis;
+
     //Use Builder
     protected BendableCuboid(Quad[] sides, RememberingPos[] positions, float minX, float minY, float minZ, float maxX, float maxY, float maxZ, float fixX, float fixY, float fixZ, Direction direction, Plane basePlane, Plane otherPlane, float fullSize) {
         this.sides = sides;
@@ -64,6 +66,7 @@ public class BendableCuboid implements ICuboid, IBendable, IterableRePos {
     }
 
     public Matrix4f applyBend(float bendAxis, float bendValue){
+        this.bend = bendValue; this.bendAxis = bendAxis;
         return this.applyBend(bendAxis, bendValue, this);
     }
 
@@ -117,6 +120,11 @@ public class BendableCuboid implements ICuboid, IBendable, IterableRePos {
          * Size parameters
          */
         public Direction direction; //now, way better
+
+        public Builder setDirection(Direction d){
+            this.direction = d;
+            return this;
+        }
 
         public BendableCuboid build(Data data){
             ArrayList<Quad> planes = new ArrayList<>();
@@ -226,6 +234,13 @@ public class BendableCuboid implements ICuboid, IBendable, IterableRePos {
     public void render(MatrixStack.Entry matrices, VertexConsumer vertexConsumer, float red, float green, float blue, float alpha, int light, int overlay) {
         for(Quad quad:sides){
             quad.render(matrices, vertexConsumer, light, overlay, red, green, blue, alpha);
+        }
+    }
+
+    @Override
+    public void copyState(ICuboid other) {
+        if(other instanceof BendableCuboid b){
+            this.applyBend(b.bendAxis, b.bend); //This works only in J16 or higher
         }
     }
 

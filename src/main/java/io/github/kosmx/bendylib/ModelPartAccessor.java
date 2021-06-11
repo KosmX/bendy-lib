@@ -16,6 +16,12 @@ public final class ModelPartAccessor {
         return ((IModelPartAccessor)modelPart).getChildren();
     }
 
+    /**
+     * Get a cuboid, and cast ist to {@link MutableCuboid}
+     * @param modelPart
+     * @param index
+     * @return
+     */
     public static MutableCuboid getCuboid(ModelPart modelPart, int index){
         return (MutableCuboid) getCuboids(modelPart).get(index);
     }

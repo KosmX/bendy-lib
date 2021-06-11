@@ -175,7 +175,7 @@ publishing {
 	// select the repositories you want to publish to
 	repositories {
 		// uncomment to publish to the local maven
-		if(ossrhPassword != null && false) {
+		if(ossrhPassword != null) {
 			maven {
 				name = "mavenCentral" //:D
 				url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"

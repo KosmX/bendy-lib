@@ -5,14 +5,17 @@ setup with gradle:
 
 ```groovy
 dependencies {
-  (...) 
-    modImplementation "io.github.kosmx.bendylib:bendy-lib:${project.bendylib_version}"
-    include "io.github.kosmx.bendylib:bendy-lib:${project.bendylib_version}"
+    (...)
+    repositories {
+        mavenCentral()
+        (...)
+    }
+    (...) 
+    modImplementation "io.github.kosmx:bendy-lib:${project.bendylib_version}"
+    include "io.github.kosmx:bendy-lib:${project.bendylib_version}"
     //you can find the latest version in GitHub packages
-    //You may use com.kosmx.bendylib group id if you are using jcenter (PLS don't)
 }
 ```
-You can use the artifact from `jcenter`, I'll move to Maven Central soon
 
 designed to be able to swap and bend cuboids.
 

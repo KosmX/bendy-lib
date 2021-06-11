@@ -2,10 +2,9 @@
   "required": true,
   "package": "io.github.kosmx.bendylib.mixin",
   "compatibilityLevel": "JAVA_8",
-  "mixins": [
-  ],
   "client": [
-    "ModelPartMixin"
+    "CuboidMutator",
+    "IModelPartMixin"
   ],
   "server": [],
   "injectors": {

@@ -9,7 +9,7 @@
   ],
   "contributors": [],
   "contact": {},
-  "license": "CC0",
+  "license": "CC-BY-4.0 License",
   "environment": "client",
   "accessWidener": "bendylib.accesswidener",
   "entrypoints": {
@@ -21,6 +21,8 @@
     "fabricloader": ">=0.9.1"
   },
   "custom": {
-    "modmenu:api": true
+    "modmenu": {
+      "badges": ["library"]
+    }
   }
 }

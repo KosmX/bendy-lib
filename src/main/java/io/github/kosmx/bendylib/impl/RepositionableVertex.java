@@ -1,6 +1,6 @@
 package io.github.kosmx.bendylib.impl;
 
-import net.minecraft.client.util.math.Vector3f;
+import net.minecraft.util.math.Vec3f;
 
 /**
  * This vertex's position can be changed.
@@ -23,7 +23,7 @@ public class RepositionableVertex implements IRepositionableVertex {
     }
 
     @Override
-    public Vector3f getPos() {
+    public Vec3f getPos() {
         return pos.getPos();
     }
 

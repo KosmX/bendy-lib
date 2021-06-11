@@ -1,6 +1,6 @@
 package io.github.kosmx.bendylib.impl;
 
-import net.minecraft.client.util.math.Vector3f;
+import net.minecraft.util.math.Vec3f;
 
 /**
  * To create custom Vertices
@@ -12,7 +12,7 @@ public interface IVertex {
      * get the vertex's position
      * @return pos
      */
-    Vector3f getPos();
+    Vec3f getPos();
 
     /**
      * get texture u coordinate

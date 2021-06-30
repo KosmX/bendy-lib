@@ -1,4 +1,4 @@
-package io.github.kosmx.bendylib.impl;
+package io.github.kosmx.bendylib.impl.accessors;
 
 import net.minecraft.client.model.ModelPart;
 

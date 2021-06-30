@@ -1,13 +1,13 @@
 package io.github.kosmx.bendylib.impl;
 
 import io.github.kosmx.bendylib.ICuboidBuilder;
+import io.github.kosmx.bendylib.impl.accessors.DirectionMutator;
+import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.*;
 import java.util.function.Consumer;
 
 /**
@@ -254,8 +254,10 @@ public class BendableCuboid implements ICuboid, IBendable, IterableRePos {
      */
     public static class Quad{
         public final IVertex[] vertices;
+        final float u1, u2, v1, v2, su, sv;
 
         public Quad(RememberingPos[] vertices, float u1, float v1, float u2, float v2, float squishU, float squishV, boolean flip){
+            this.u1 = u1; this.u2 = u2; this.v1 = v1; this.v2 = v2; su = squishU; sv = squishV;
             float f = 0/squishU;
             float g = 0/squishV;
             this.vertices = new IVertex[4];
@@ -303,10 +305,31 @@ public class BendableCuboid implements ICuboid, IBendable, IterableRePos {
             //Return the cross product, if it's zero then return anything non-zero to not cause crash...
             return vecA.normalize() ? vecA : Direction.NORTH.getUnitVector();
         }
+
+        @SuppressWarnings({"ConstantConditions"})
+        private ModelPart.Quad toModelPart_Quad(){
+            ModelPart.Quad quad = new ModelPart.Quad(new ModelPart.Vertex[]{
+                    vertices[0].toMojVertex(),
+                    vertices[1].toMojVertex(),
+                    vertices[2].toMojVertex(),
+                    vertices[3].toMojVertex()
+            }, u1, v1, u2, v2, su, sv, false, Direction.UP);
+            ((DirectionMutator)quad).setDirection(this.getDirection());
+            return quad;
+        }
     }
 
     @Override
     public boolean disableAfterDraw() {
         return false;
+    }
+
+    @Override
+    public List<ModelPart.Quad> getQuads() {
+        LinkedList<ModelPart.Quad> sides = new LinkedList<>();
+        for(Quad quad : this.sides){
+            sides.add(quad.toModelPart_Quad());
+        }
+        return sides;
     }
 }

@@ -1,6 +1,6 @@
 package io.github.kosmx.bendylib;
 
-import io.github.kosmx.bendylib.impl.IModelPartAccessor;
+import io.github.kosmx.bendylib.impl.accessors.IModelPartAccessor;
 import net.minecraft.client.model.ModelPart;
 
 import java.util.*;

@@ -3,7 +3,7 @@ package io.github.kosmx.bendylib.mixin;
 
 import io.github.kosmx.bendylib.ICuboidBuilder;
 import io.github.kosmx.bendylib.MutableCuboid;
-import io.github.kosmx.bendylib.impl.CuboidSideAccessor;
+import io.github.kosmx.bendylib.impl.accessors.CuboidSideAccessor;
 import io.github.kosmx.bendylib.impl.ICuboid;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.VertexConsumer;

@@ -1,7 +1,10 @@
 package io.github.kosmx.bendylib.impl;
 
+import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.util.math.MatrixStack;
+
+import java.util.List;
 
 /**
  * Minecraft Cuboid object
@@ -37,5 +40,14 @@ public interface ICuboid {
      */
     default boolean disableAfterDraw(){
         return true;
+    }
+
+    /**
+     * Convert custom Quads to {@link net.minecraft.client.model.ModelPart.Quad}
+     * Needed for Shader fix
+     * @return list of converted quads
+     */
+    default List<ModelPart.Quad> getQuads(){
+        return null;
     }
 }

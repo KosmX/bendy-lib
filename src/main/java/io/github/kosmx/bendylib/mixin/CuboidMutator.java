@@ -3,14 +3,15 @@ package io.github.kosmx.bendylib.mixin;
 
 import io.github.kosmx.bendylib.ICuboidBuilder;
 import io.github.kosmx.bendylib.MutableCuboid;
+import io.github.kosmx.bendylib.impl.accessors.CuboidSideAccessor;
 import io.github.kosmx.bendylib.impl.ICuboid;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Pair;
-import org.jetbrains.annotations.ApiStatus;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -18,17 +19,22 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
+import java.util.List;
 
 @Mixin(ModelPart.Cuboid.class)
-@ApiStatus.Experimental
-public class CuboidMutator implements MutableCuboid {
+public class CuboidMutator implements MutableCuboid, CuboidSideAccessor {
 
     @Shadow @Final public float minX;
     @Shadow @Final public float minY;
     @Shadow @Final public float minZ;
+    @Mutable
+    @Shadow @Final private ModelPart.Quad[] sides;
     //Store the mutators and the mutator builders.
     HashMap<String, ICuboid> mutators = new HashMap<>();
     HashMap<String, ICuboidBuilder> mutatorBuilders = new HashMap<>();
+
+    private ModelPart.Quad[] originalQuads;
+    private boolean isSidesSwapped = false;
 
     ICuboidBuilder.Data partData;
 
@@ -40,6 +46,7 @@ public class CuboidMutator implements MutableCuboid {
     @Inject(method = "<init>", at = @At(value = "RETURN"))
     private void constructor(int u, int v, float x, float y, float z, float sizeX, float sizeY, float sizeZ, float extraX, float extraY, float extraZ, boolean mirror, float textureWidth, float textureHeight, CallbackInfo ci){
         partData = new ICuboidBuilder.Data(u, v, minX, minY, minZ, sizeX, sizeY, sizeZ, extraX, extraY, extraZ, mirror, textureWidth, textureHeight);
+        originalQuads = this.sides;
     }
 
 
@@ -118,5 +125,33 @@ public class CuboidMutator implements MutableCuboid {
             }
             ci.cancel();
         }
+    }
+
+    @Override
+    public void doSideSwapping(){
+        if(this.getActiveMutator() != null){
+            List<ModelPart.Quad> sides = this.getActiveMutator().getRight().getQuads();
+            if(sides != null){
+                this.isSidesSwapped = true;
+                this.sides = sides.toArray(new ModelPart.Quad[4]);
+            }
+        }
+    }
+
+    @Override
+    public ModelPart.Quad[] getSides() {
+        return this.sides;
+    }
+
+    @Override
+    public void setSides(ModelPart.Quad[] sides) {
+        isSidesSwapped = true;
+        this.sides = sides;
+    }
+
+    @Override
+    public void resetSides() {
+        this.sides = this.originalQuads;
+        isSidesSwapped = false;
     }
 }

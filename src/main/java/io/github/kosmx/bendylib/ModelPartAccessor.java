@@ -47,6 +47,6 @@ public final class ModelPartAccessor {
      * Different workarounds to fix shared mod incompatibilities
      */
     public enum Workaround {
-        ExportQuads, None;
+        ExportQuads, VanillaDraw, None;
     }
 }

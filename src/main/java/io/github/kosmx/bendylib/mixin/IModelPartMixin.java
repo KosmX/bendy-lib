@@ -55,7 +55,7 @@ public abstract class IModelPartMixin implements IModelPartAccessor {
 
     @Redirect(method = "render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;IIFFFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/ModelPart;renderCuboids(Lnet/minecraft/client/util/math/MatrixStack$Entry;Lnet/minecraft/client/render/VertexConsumer;IIFFFF)V"))
     private void redirectRenderCuboids(ModelPart modelPart, MatrixStack.Entry entry, VertexConsumer vertexConsumer, int light, int overlay, float red, float green, float blue, float alpha){
-        if(ModelPartAccessor.isWorkaroundActive(ModelPartAccessor.Workaround.ExportQuads) || true){
+        if(ModelPartAccessor.isWorkaroundActive(ModelPartAccessor.Workaround.ExportQuads)){
             for(ModelPart.Cuboid cuboid:cuboids){
                 ((CuboidSideAccessor)cuboid).doSideSwapping(); //:D
             }
@@ -68,28 +68,4 @@ public abstract class IModelPartMixin implements IModelPartAccessor {
             renderCuboids(entry, vertexConsumer, light, overlay, red, green, blue, alpha);
         }
     }
-
-    /*
-    @Inject(method = "render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;IIFFFF)V", at = @At("HEAD"))
-    private void quadWorkaround(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green, float blue, float alpha, CallbackInfo ci){
-        if(visible && ModelPartAccessor.isWorkaroundActive(ModelPartAccessor.Workaround.ExportQuads)){
-            for(ModelPart.Cuboid cuboid:cuboids){
-                ((CuboidSideAccessor)cuboid).doSideSwapping(); //:D
-            }
-        }
-        else {
-            ModelPartAccessor.getWorkaroundSet().add(ModelPartAccessor.Workaround.ExportQuads);
-        }
-    }
-
-    @Inject(method = "render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;IIFFFF)V", at = @At("RETURN"))
-    private void quadWorkaroundReset(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green, float blue, float alpha, CallbackInfo ci){
-        if(visible && ModelPartAccessor.isWorkaroundActive(ModelPartAccessor.Workaround.ExportQuads)){
-            for(ModelPart.Cuboid cuboid:cuboids){
-                ((CuboidSideAccessor)cuboid).resetSides(); //:D
-            }
-        }
-    }
-
-     */
 }

@@ -15,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -26,12 +27,15 @@ public abstract class IModelPartMixin implements IModelPartAccessor {
 
     @Shadow @Final private List<ModelPart.Cuboid> cuboids;
 
+    private boolean hasMutatedCuboid = false;
+
     @Shadow public boolean visible;
 
     @Shadow protected abstract void renderCuboids(MatrixStack.Entry entry, VertexConsumer vertexConsumer, int light, int overlay, float red, float green, float blue, float alpha);
 
     @Override
     public List<ModelPart.Cuboid> getCuboids() {
+        hasMutatedCuboid = true;
         return cuboids;
     }
 
@@ -62,6 +66,16 @@ public abstract class IModelPartMixin implements IModelPartAccessor {
             renderCuboids(entry, vertexConsumer, light, overlay, red, green, blue, alpha);
             for(ModelPart.Cuboid cuboid:cuboids){
                 ((CuboidSideAccessor)cuboid).resetSides(); //:D
+            }
+        }
+        else if(ModelPartAccessor.isWorkaroundActive(ModelPartAccessor.Workaround.VanillaDraw) || true){
+            if(cuboids.size() == 1 && ((MutableCuboid)cuboids.get(0)).getActiveMutator() == null){
+                renderCuboids(entry, vertexConsumer, light, overlay, red, green, blue, alpha);
+            }
+            else {
+                for(ModelPart.Cuboid cuboid:cuboids){
+                    cuboid.renderCuboid(entry, vertexConsumer, light, overlay, red, green, blue, alpha);
+                }
             }
         }
         else {

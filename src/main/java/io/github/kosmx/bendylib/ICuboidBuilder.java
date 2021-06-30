@@ -1,12 +1,10 @@
 package io.github.kosmx.bendylib;
 
 import io.github.kosmx.bendylib.impl.ICuboid;
-import org.jetbrains.annotations.ApiStatus;
 
 /**
  * Can be passed as a lambda, get a data, returns a cuboid
  */
-@ApiStatus.Experimental
 @FunctionalInterface
 public interface ICuboidBuilder<C extends ICuboid> {
 

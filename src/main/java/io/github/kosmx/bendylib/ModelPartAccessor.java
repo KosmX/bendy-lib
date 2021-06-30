@@ -1,10 +1,9 @@
 package io.github.kosmx.bendylib;
 
-import io.github.kosmx.bendylib.impl.IModelPartAccessor;
+import io.github.kosmx.bendylib.impl.accessors.IModelPartAccessor;
 import net.minecraft.client.model.ModelPart;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Access to children and cuboids in {@link ModelPart}
@@ -28,5 +27,13 @@ public final class ModelPartAccessor {
 
     public static List<ModelPart.Cuboid> getCuboids(ModelPart modelPart){
         return ((IModelPartAccessor)modelPart).getCuboids();
+    }
+
+    /**
+     * Different workarounds to fix shared mod incompatibilities
+     * If needed, I advice using {@link Workaround#VanillaDraw}. that is the most stable in any modded environment.
+     */
+    public enum Workaround {
+        ExportQuads, VanillaDraw, None;
     }
 }

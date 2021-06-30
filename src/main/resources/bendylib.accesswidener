@@ -1,4 +1,5 @@
 accessWidener v1 named
-#Comment
+#
 
 extendable class net/minecraft/client/model/ModelPart
+accessible class net/minecraft/client/model/ModelPart$Quad

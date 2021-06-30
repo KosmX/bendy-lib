@@ -326,7 +326,7 @@ public class BendableCuboid implements ICuboid, IBendable, IterableRePos {
 
     @Override
     public List<ModelPart.Quad> getQuads() {
-        LinkedList<ModelPart.Quad> sides = new LinkedList<>();
+        List<ModelPart.Quad> sides = new ArrayList<>();
         for(Quad quad : this.sides){
             sides.add(quad.toModelPart_Quad());
         }

@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Iterator;
@@ -19,13 +20,15 @@ import java.util.List;
 import java.util.Map;
 
 @Mixin(ModelPart.class)
-public class IModelPartMixin implements IModelPartAccessor {
+public abstract class IModelPartMixin implements IModelPartAccessor {
 
     @Shadow @Final private Map<String, ModelPart> children;
 
     @Shadow @Final private List<ModelPart.Cuboid> cuboids;
 
     @Shadow public boolean visible;
+
+    @Shadow protected abstract void renderCuboids(MatrixStack.Entry entry, VertexConsumer vertexConsumer, int light, int overlay, float red, float green, float blue, float alpha);
 
     @Override
     public List<ModelPart.Cuboid> getCuboids() {
@@ -50,12 +53,32 @@ public class IModelPartMixin implements IModelPartAccessor {
 
     }
 
+    @Redirect(method = "render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;IIFFFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/ModelPart;renderCuboids(Lnet/minecraft/client/util/math/MatrixStack$Entry;Lnet/minecraft/client/render/VertexConsumer;IIFFFF)V"))
+    private void redirectRenderCuboids(ModelPart modelPart, MatrixStack.Entry entry, VertexConsumer vertexConsumer, int light, int overlay, float red, float green, float blue, float alpha){
+        if(ModelPartAccessor.isWorkaroundActive(ModelPartAccessor.Workaround.ExportQuads) || true){
+            for(ModelPart.Cuboid cuboid:cuboids){
+                ((CuboidSideAccessor)cuboid).doSideSwapping(); //:D
+            }
+            renderCuboids(entry, vertexConsumer, light, overlay, red, green, blue, alpha);
+            for(ModelPart.Cuboid cuboid:cuboids){
+                ((CuboidSideAccessor)cuboid).resetSides(); //:D
+            }
+        }
+        else {
+            renderCuboids(entry, vertexConsumer, light, overlay, red, green, blue, alpha);
+        }
+    }
+
+    /*
     @Inject(method = "render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;IIFFFF)V", at = @At("HEAD"))
     private void quadWorkaround(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green, float blue, float alpha, CallbackInfo ci){
         if(visible && ModelPartAccessor.isWorkaroundActive(ModelPartAccessor.Workaround.ExportQuads)){
             for(ModelPart.Cuboid cuboid:cuboids){
                 ((CuboidSideAccessor)cuboid).doSideSwapping(); //:D
             }
+        }
+        else {
+            ModelPartAccessor.getWorkaroundSet().add(ModelPartAccessor.Workaround.ExportQuads);
         }
     }
 
@@ -67,4 +90,6 @@ public class IModelPartMixin implements IModelPartAccessor {
             }
         }
     }
+
+     */
 }

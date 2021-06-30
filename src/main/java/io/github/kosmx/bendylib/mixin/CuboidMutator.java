@@ -133,7 +133,7 @@ public class CuboidMutator implements MutableCuboid, CuboidSideAccessor {
             List<ModelPart.Quad> sides = this.getActiveMutator().getRight().getQuads();
             if(sides != null){
                 this.isSidesSwapped = true;
-                this.sides = (ModelPart.Quad[]) sides.toArray();
+                this.sides = sides.toArray(new ModelPart.Quad[4]);
             }
         }
     }

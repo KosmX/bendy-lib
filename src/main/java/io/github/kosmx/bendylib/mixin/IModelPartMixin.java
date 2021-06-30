@@ -15,7 +15,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +27,12 @@ public abstract class IModelPartMixin implements IModelPartAccessor {
     @Shadow @Final private List<ModelPart.Cuboid> cuboids;
 
     private boolean hasMutatedCuboid = false;
+    /**
+     * VanillaDraw won't cause slowdown in vanilla and will fix many issues.
+     * If needed, use {@link IModelPartAccessor#setWorkaround(ModelPartAccessor.Workaround)} to set the workaround function
+     * {@link ModelPartAccessor.Workaround#None} to do nothing about it. It will work in Vanilla, but not with Sodium/OF
+     */
+    private ModelPartAccessor.Workaround workaround = ModelPartAccessor.Workaround.VanillaDraw;
 
     @Shadow public boolean visible;
 
@@ -59,7 +64,7 @@ public abstract class IModelPartMixin implements IModelPartAccessor {
 
     @Redirect(method = "render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;IIFFFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/ModelPart;renderCuboids(Lnet/minecraft/client/util/math/MatrixStack$Entry;Lnet/minecraft/client/render/VertexConsumer;IIFFFF)V"))
     private void redirectRenderCuboids(ModelPart modelPart, MatrixStack.Entry entry, VertexConsumer vertexConsumer, int light, int overlay, float red, float green, float blue, float alpha){
-        if(ModelPartAccessor.isWorkaroundActive(ModelPartAccessor.Workaround.ExportQuads)){
+        if(workaround == ModelPartAccessor.Workaround.ExportQuads){
             for(ModelPart.Cuboid cuboid:cuboids){
                 ((CuboidSideAccessor)cuboid).doSideSwapping(); //:D
             }
@@ -68,8 +73,8 @@ public abstract class IModelPartMixin implements IModelPartAccessor {
                 ((CuboidSideAccessor)cuboid).resetSides(); //:D
             }
         }
-        else if(ModelPartAccessor.isWorkaroundActive(ModelPartAccessor.Workaround.VanillaDraw)){
-            if(cuboids.size() == 1 && ((MutableCuboid)cuboids.get(0)).getActiveMutator() == null){
+        else if(workaround == ModelPartAccessor.Workaround.VanillaDraw){
+            if(!hasMutatedCuboid && cuboids.size() == 1 && ((MutableCuboid)cuboids.get(0)).getActiveMutator() == null){
                 renderCuboids(entry, vertexConsumer, light, overlay, red, green, blue, alpha);
             }
             else {
@@ -81,5 +86,10 @@ public abstract class IModelPartMixin implements IModelPartAccessor {
         else {
             renderCuboids(entry, vertexConsumer, light, overlay, red, green, blue, alpha);
         }
+    }
+
+    @Override
+    public void setWorkaround(ModelPartAccessor.Workaround workaround) {
+        this.workaround = workaround;
     }
 }

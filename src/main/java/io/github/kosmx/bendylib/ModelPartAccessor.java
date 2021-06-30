@@ -11,8 +11,6 @@ import java.util.*;
  */
 public final class ModelPartAccessor {
 
-    private static final Set<Workaround> compatibilityLevel = new HashSet<>();
-
     public static Map<String,ModelPart> getChildren(ModelPart modelPart){
         return ((IModelPartAccessor)modelPart).getChildren();
     }
@@ -32,19 +30,8 @@ public final class ModelPartAccessor {
     }
 
     /**
-     * Used to edit or just see the list.
-     * @return set containing active workarounds
-     */
-    public static Set<Workaround> getWorkaroundSet(){
-        return compatibilityLevel;
-    }
-
-    public static boolean isWorkaroundActive(Workaround workaround){
-        return compatibilityLevel.contains(workaround);
-    }
-
-    /**
      * Different workarounds to fix shared mod incompatibilities
+     * If needed, I advice using {@link Workaround#VanillaDraw}. that is the most stable in any modded environment.
      */
     public enum Workaround {
         ExportQuads, VanillaDraw, None;

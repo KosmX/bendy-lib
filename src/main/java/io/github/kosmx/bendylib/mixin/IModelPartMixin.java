@@ -68,7 +68,7 @@ public abstract class IModelPartMixin implements IModelPartAccessor {
                 ((CuboidSideAccessor)cuboid).resetSides(); //:D
             }
         }
-        else if(ModelPartAccessor.isWorkaroundActive(ModelPartAccessor.Workaround.VanillaDraw) || true){
+        else if(ModelPartAccessor.isWorkaroundActive(ModelPartAccessor.Workaround.VanillaDraw)){
             if(cuboids.size() == 1 && ((MutableCuboid)cuboids.get(0)).getActiveMutator() == null){
                 renderCuboids(entry, vertexConsumer, light, overlay, red, green, blue, alpha);
             }

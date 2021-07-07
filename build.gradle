@@ -9,8 +9,8 @@ plugins {
 repositories {
 	maven { url "https://maven.shedaniel.me/" }
 	maven{
-		name "TerraformersMC"
-		url "https://maven.terraformersmc.com/releases/"
+		name "TerraformersMC Archive"
+		url "https://raw.githubusercontent.com/TerraformersMC/Archive/main/"
 	}
 }
 

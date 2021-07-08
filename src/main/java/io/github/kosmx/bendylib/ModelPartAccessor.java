@@ -1,5 +1,6 @@
 package io.github.kosmx.bendylib;
 
+import io.github.kosmx.bendylib.impl.DummyCuboid;
 import io.github.kosmx.bendylib.impl.accessors.IModelPartAccessor;
 import net.minecraft.client.model.ModelPart;
 
@@ -17,12 +18,28 @@ public final class ModelPartAccessor {
 
     /**
      * Get a cuboid, and cast ist to {@link MutableCuboid}
+     * Use {@link ModelPartAccessor#optionalGetCuboid(ModelPart, int)}
      * @param modelPart
      * @param index
      * @return
      */
+    @Deprecated
     public static MutableCuboid getCuboid(ModelPart modelPart, int index){
-        return (MutableCuboid) getCuboids(modelPart).get(index);
+        Optional<MutableCuboid> optionalMutableCuboid = optionalGetCuboid(modelPart, index);
+        if(optionalMutableCuboid.isPresent()) return optionalMutableCuboid.get();
+        else return new DummyCuboid();
+    }
+
+    /**
+     * Get a cuboid, and cast it to {@link MutableCuboid}
+     *
+     * @param modelPart
+     * @param index
+     * @return
+     */
+    public static Optional<MutableCuboid> optionalGetCuboid(ModelPart modelPart, int index){
+        if(modelPart == null || getCuboids(modelPart) == null || getCuboids(modelPart).size() <= index) return Optional.empty();
+        return Optional.of((MutableCuboid)getCuboids(modelPart).get(index));
     }
 
     public static List<ModelPart.Cuboid> getCuboids(ModelPart modelPart){

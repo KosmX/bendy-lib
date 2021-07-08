@@ -26,8 +26,7 @@ public final class ModelPartAccessor {
     @Deprecated
     public static MutableCuboid getCuboid(ModelPart modelPart, int index){
         Optional<MutableCuboid> optionalMutableCuboid = optionalGetCuboid(modelPart, index);
-        if(optionalMutableCuboid.isPresent()) return optionalMutableCuboid.get();
-        else return new DummyCuboid();
+        return optionalMutableCuboid.orElseGet(DummyCuboid::new);
     }
 
     /**

@@ -10,6 +10,15 @@ import javax.annotation.Nullable;
 @Deprecated
 @ApiStatus.Experimental
 public class DummyCuboid implements MutableCuboid {
+
+    private static boolean bl = true;
+
+    public DummyCuboid(){
+        if(bl) {
+            System.out.println("A Dummy cuboid was created. that is not good, but can be worse");
+            bl = false;
+        }
+    }
     @Override
     public boolean registerMutator(String name, ICuboidBuilder<ICuboid> builder) {
         return false;

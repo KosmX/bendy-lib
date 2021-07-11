@@ -125,6 +125,7 @@ if (secretPropsFile.exists()) {
 }
 signing {
 	if (ossrhPassword != null) {
+		useGpgCmd()
 		sign publishing.publications
 	}
 }

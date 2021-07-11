@@ -9,8 +9,8 @@ plugins {
 repositories {
 	maven { url "https://maven.shedaniel.me/" }
 	maven{
-		name "TerraformersMC"
-		url "https://maven.terraformersmc.com/releases/"
+		name "TerraformersMC Archive"
+		url "https://raw.githubusercontent.com/TerraformersMC/Archive/main/"
 	}
 }
 
@@ -78,6 +78,7 @@ processResources {
 // see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
 tasks.withType(JavaCompile) {
 	options.encoding = "UTF-8"
+	options.deprecation = true	//deprecated warning on compile
 }
 
 // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task

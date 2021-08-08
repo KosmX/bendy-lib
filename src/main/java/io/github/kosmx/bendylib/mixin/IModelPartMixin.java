@@ -51,6 +51,7 @@ public abstract class IModelPartMixin implements IModelPartAccessor {
 
     @Inject(method = "copyTransform", at = @At("RETURN"))
     private void copyTransformExtended(ModelPart part, CallbackInfo ci){
+        if(((IModelPartAccessor)part).getCuboids() == null || cuboids == null) return; // Not copying state
         Iterator<ModelPart.Cuboid> iterator0 = ((IModelPartAccessor)part).getCuboids().iterator();
         Iterator<ModelPart.Cuboid> iterator1 = cuboids.iterator();
 

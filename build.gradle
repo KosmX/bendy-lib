@@ -59,8 +59,6 @@ dependencies {
 	//testmodRuntimeOnly "me.shedaniel.cloth:config-2:${project.cloth_version}"
 	//testmodCompile sourceSets.main.output
 
-	implementation 'com.google.code.gson:gson:2.8.5' //GSon serializer
-
 	compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
 
 }

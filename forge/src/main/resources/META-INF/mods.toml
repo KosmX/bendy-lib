@@ -1,0 +1,29 @@
+modLoader = "javafml"
+loaderVersion = "[36,)"
+#issueTrackerURL = ""
+license = "Insert License Here"
+
+[[mods]]
+modId = "bendylib"
+version = "${version}"
+displayName = "Bendy lib"
+authors = "KosmX"
+description = '''
+Bendy API ported to Forge
+But you should use Fabric or Quilt
+'''
+#logoFile = ""
+
+[[dependencies.bendylib]]
+modId = "forge"
+mandatory = true
+versionRange = "[36,)"
+ordering = "NONE"
+side = "CLIENT"
+
+[[dependencies.bendylib]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.16,)"
+ordering = "NONE"
+side = "CLIENT"

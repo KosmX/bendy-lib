@@ -277,13 +277,13 @@ public class BendableCuboid implements ICuboid, IBendable, IterableRePos {
         }
         public void render(MatrixStack.Entry matrices, VertexConsumer vertexConsumer, int light, int overlay, float red, float green, float blue, float alpha){
             Vec3f direction = this.getDirection();
-            direction.transform(matrices.getNormal());
+            direction.transform(matrices.getNormalMatrix());
 
             for (int i = 0; i != 4; ++i){
                 IVertex vertex = this.vertices[i];
                 Vec3f vertexPos = vertex.getPos();
                 Vector4f pos = new Vector4f(vertexPos.getX()/16f, vertexPos.getY()/16f, vertexPos.getZ()/16f, 1);
-                pos.transform(matrices.getModel());
+                pos.transform(matrices.getPositionMatrix());
                 vertexConsumer.vertex(pos.getX(), pos.getY(), pos.getZ(), red, green, blue, alpha, vertex.getU(), vertex.getV(), overlay, light, direction.getX(), direction.getY(), direction.getZ());
             }
         }

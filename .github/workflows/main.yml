@@ -25,6 +25,6 @@ jobs:
       - name: Publish package
         run: gradle publish --no-daemon
         env:
-          MAVEN_USER: ${{ secrets.GITHUB_TOKEN }}
+          MAVEN_USER: ${{ secrets.MAVEN_USER }}
           MAVEN_PASS: ${{ secrets.MAVEN_PASS }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

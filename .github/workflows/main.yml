@@ -15,14 +15,15 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-      - uses: actions/setup-java@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
         with:
-          distribution: 'adopt'
-          java-version: '16'
+          distribution: 'microsoft'
+          java-version: '17'
 
       # Runs a single command using the runners shell
       - name: Publish package
         run: gradle publish --no-daemon
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MAVEN_USER: ${{ secrets.GITHUB_TOKEN }}
+          MAVEN_PASS: ${{ secrets.MAVEN_PASS }}

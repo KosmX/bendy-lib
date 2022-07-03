@@ -78,10 +78,12 @@ publishing {
     // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
     repositories {
         if (System.getenv("MAVEN_PASS") != null) {
-            url = 'https://maven.kosmx.dev/'
-            credentials {
-                username = project.keys.maven_user
-                password = project.keys.kosmx_maven
+            maven {
+                url = 'https://maven.kosmx.dev/'
+                credentials {
+                    username = project.keys.maven_user
+                    password = project.keys.kosmx_maven
+                }
             }
         } else {
             mavenLocal()

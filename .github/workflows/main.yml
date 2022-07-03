@@ -27,3 +27,4 @@ jobs:
         env:
           MAVEN_USER: ${{ secrets.GITHUB_TOKEN }}
           MAVEN_PASS: ${{ secrets.MAVEN_PASS }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

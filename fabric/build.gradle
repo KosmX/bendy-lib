@@ -80,7 +80,7 @@ publishing {
         if (System.getenv("MAVEN_PASS") != null) {
             url = 'https://maven.kosmx.dev/'
             credentials {
-                username = 'kosmx'
+                username = project.keys.maven_user
                 password = project.keys.kosmx_maven
             }
         } else {

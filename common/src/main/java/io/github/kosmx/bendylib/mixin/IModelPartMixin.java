@@ -7,9 +7,7 @@ import io.github.kosmx.bendylib.impl.accessors.IModelPartAccessor;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.util.math.MatrixStack;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -26,6 +24,7 @@ public abstract class IModelPartMixin implements IModelPartAccessor {
 
     @Shadow @Final private List<ModelPart.Cuboid> cuboids;
 
+    @Unique
     private boolean hasMutatedCuboid = false;
     /**
      * VanillaDraw won't cause slowdown in vanilla and will fix many issues.
@@ -61,8 +60,19 @@ public abstract class IModelPartMixin implements IModelPartAccessor {
 
     }
 
-    @Redirect(method = "render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;IIFFFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/ModelPart;renderCuboids(Lnet/minecraft/client/util/math/MatrixStack$Entry;Lnet/minecraft/client/render/VertexConsumer;IIFFFF)V"))
+    @Redirect(method = "render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;IIFFFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/ModelPart;renderCuboids(Lnet/minecraft/client/util/math/MatrixStack$Entry;Lnet/minecraft/client/render/VertexConsumer;IIFFFF)V"), require = 0) //It might not find anything if OF already broke the game
     private void redirectRenderCuboids(ModelPart modelPart, MatrixStack.Entry entry, VertexConsumer vertexConsumer, int light, int overlay, float red, float green, float blue, float alpha){
+        redirectedFunction(modelPart, entry, vertexConsumer, light, overlay, red, green, blue, alpha);
+    }
+
+    @Dynamic("render function is replaced with this by Optifine")
+    @Redirect(method = "render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;IIFFFFZ)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/ModelPart;renderCuboids(Lnet/minecraft/client/util/math/MatrixStack$Entry;Lnet/minecraft/client/render/VertexConsumer;IIFFFF)V"), require = 0)
+    private void redirectOF(ModelPart modelPart, MatrixStack.Entry entry, VertexConsumer vertexConsumer, int light, int overlay, float red, float green, float blue, float alpha) {
+        redirectedFunction(modelPart, entry, vertexConsumer, light, overlay, red, green, blue, alpha);
+    }
+
+    @Unique
+    private void redirectedFunction(ModelPart modelPart, MatrixStack.Entry entry, VertexConsumer vertexConsumer, int light, int overlay, float red, float green, float blue, float alpha) {
         if(workaround == ModelPartAccessor.Workaround.ExportQuads){
             for(ModelPart.Cuboid cuboid:cuboids){
                 ((CuboidSideAccessor)cuboid).doSideSwapping(); //:D

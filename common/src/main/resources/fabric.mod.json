@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "bendy-lib",
+  "version": "${version}",
+  "name": "Bendy api",
+  "description": "Bending model parts",
+  "authors": [
+    "KosmX"
+  ],
+  "contributors": [],
+  "contact": {},
+  "license": "Creative Commons Attribution 4.0 International Public License",
+  "environment": "client",
+  "accessWidener": "bendylib.accesswidener",
+  "entrypoints": {
+  },
+  "mixins": [
+    "bendylib.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.9.1"
+  },
+  "custom": {
+    "modmenu:api": true
+  }
+}

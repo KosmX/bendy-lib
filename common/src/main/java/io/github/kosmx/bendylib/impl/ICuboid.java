@@ -1,10 +1,7 @@
 package io.github.kosmx.bendylib.impl;
 
-import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.util.math.MatrixStack;
-
-import java.util.List;
 
 /**
  * Minecraft Cuboid object
@@ -27,27 +24,4 @@ public interface ICuboid {
      * @param overlay overlay
      */
     void render(MatrixStack.Entry matrices, VertexConsumer vertexConsumer, float red, float green, float blue, float alpha, int light, int overlay);
-
-    /**
-     * Copy custom state from another cuboid
-     * @param other other ICuboid
-     */
-    void copyState(ICuboid other);
-
-    /**
-     * Disable mutation after invoking {@link ICuboid#render(MatrixStack.Entry, VertexConsumer, float, float, float, float, int, int)}
-     * @return true or false...
-     */
-    default boolean disableAfterDraw(){
-        return true;
-    }
-
-    /**
-     * Convert custom Quads to {@link net.minecraft.client.model.ModelPart.Quad}
-     * Needed for Shader fix
-     * @return list of converted quads
-     */
-    default List<ModelPart.Quad> getQuads(){
-        return null;
-    }
 }

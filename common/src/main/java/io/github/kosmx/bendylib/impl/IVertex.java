@@ -1,7 +1,6 @@
 package io.github.kosmx.bendylib.impl;
 
-import net.minecraft.client.model.ModelPart;
-import net.minecraft.util.math.Vec3f;
+import net.minecraft.client.util.math.Vector3f;
 
 /**
  * To create custom Vertices
@@ -13,7 +12,7 @@ public interface IVertex {
      * get the vertex's position
      * @return pos
      */
-    Vec3f getPos();
+    Vector3f getPos();
 
     /**
      * get texture u coordinate
@@ -34,9 +33,5 @@ public interface IVertex {
      * @return The remapped IVertex
      */
     IVertex remap(float u, float v);
-
-    default ModelPart.Vertex toMojVertex(){
-        return new ModelPart.Vertex(this.getPos(), getU(), getV());
-    }
 
 }

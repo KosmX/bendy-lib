@@ -21,6 +21,7 @@ import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 
+@SuppressWarnings({"rawtypes", "unused"})
 @Mixin(ModelPart.Cuboid.class)
 public class CuboidMutator implements MutableCuboid, CuboidSideAccessor {
 
@@ -102,6 +103,7 @@ public class CuboidMutator implements MutableCuboid, CuboidSideAccessor {
         return null;
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public void copyStateFrom(MutableCuboid other) {
         if(other.getActiveMutator() == null){

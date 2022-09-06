@@ -19,6 +19,18 @@ configurations {
     developmentFabric.extendsFrom common
 }
 
+repositories {
+    maven { url "https://maven.terraformersmc.com/releases/" }
+    maven {
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
+        content {
+            includeGroup "maven.modrinth"
+        }
+    }
+    maven { url "https://maven.kosmx.dev/" }
+}
+
 
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:${rootProject.loader_version}"
@@ -27,6 +39,14 @@ dependencies {
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
+
+    modRuntimeOnly "com.terraformersmc:modmenu:4.0.6"
+    modRuntimeOnly "maven.modrinth:skinswapper:3.12"
+
+    modImplementation files("../3dskinlayers-fabric-1.5.1-mc1.19.1.jar")
+
+    modRuntimeOnly "dev.kosmx.player-anim:player-animation-lib-fabric:0.3.5"
+    modRuntimeOnly "maven.modrinth:emotecraft:2.2.5-MC1.19.2-fabric"
 }
 
 processResources {

@@ -12,6 +12,8 @@ dependencies {
     // We depend on fabric loader here to use the fabric @Environment annotations and get the mixin dependencies
     // Do NOT use other classes from fabric loader
     modImplementation "net.fabricmc:fabric-loader:${rootProject.loader_version}"
+
+    modImplementation files("../3dskinlayers-fabric-1.5.1-mc1.19.1.jar")
 }
 
 publishing {

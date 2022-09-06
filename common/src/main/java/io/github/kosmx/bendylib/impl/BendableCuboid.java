@@ -119,8 +119,16 @@ public class BendableCuboid implements ICuboid, IBendable, IterableRePos {
         }
     }
 
+    public float getBend() {
+        return bend;
+    }
+
+    public float getBendAxis() {
+        return bendAxis;
+    }
+
     /**
-     * a.k.a BendableCuboidFactory
+     * a.k.a. BendableCuboidFactory
      */
     public static class Builder implements ICuboidBuilder<BendableCuboid> {
         /**

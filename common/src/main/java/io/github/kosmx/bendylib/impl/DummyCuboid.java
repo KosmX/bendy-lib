@@ -35,6 +35,17 @@ public class DummyCuboid implements MutableCuboid {
         return null;
     }
 
+    @Override
+    public boolean hasMutator(String key) {
+        return false;
+    }
+
+    @org.jetbrains.annotations.Nullable
+    @Override
+    public ICuboidBuilder<ICuboid> getCuboidBuilder(String key) {
+        return null;
+    }
+
     @Nullable
     @Override
     public ICuboid getMutator(String name) {

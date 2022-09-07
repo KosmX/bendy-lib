@@ -45,6 +45,7 @@ dependencies {
 
     modImplementation files("../3dskinlayers-fabric-1.5.1-mc1.19.1.jar")
 
+    modRuntimeOnly "net.fabricmc.fabric-api:fabric-api:0.58.5+1.19.1"
     modRuntimeOnly "dev.kosmx.player-anim:player-animation-lib-fabric:0.3.5"
     modRuntimeOnly "maven.modrinth:emotecraft:2.2.5-MC1.19.2-fabric"
 }

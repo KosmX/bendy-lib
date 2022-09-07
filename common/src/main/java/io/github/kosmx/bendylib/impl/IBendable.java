@@ -89,14 +89,23 @@ public interface IBendable {
      * form a vector and a position
      * for distance calculation
      */
-    class Plane{
-        final Vec3f normal;
-        final float normDistance;
+    final class Plane{
+        public final Vec3f normal;
+        private final float normDistance;
 
         public Plane(Vec3f normal, Vec3f position){
-            this.normal = normal.copy();
+            this.normal = normal;
             this.normal.normalize();
-            this.normDistance = -normal.dot(position);
+            this.normDistance = -this.normal.dot(position);
+        }
+
+        private Plane(Vec3f normal, float normDistance) {
+            this.normal = normal;
+            this.normDistance = normDistance;
+        }
+
+        public Plane scaled(float scalar) {
+            return new Plane(this.normal.copy(), normDistance * scalar);
         }
 
         /**

@@ -101,11 +101,11 @@ public class TDSkinCompat {
 
         private BendyMeshTransformer(Direction bendDirection, float bendX, float bendY, float bendZ, Plane basePlane, Plane otherSidePlane) {
             this.bendDirection = bendDirection;
-            this.bendX = bendX;
-            this.bendY = bendY;
-            this.bendZ = bendZ;
-            this.basePlane = basePlane;
-            this.otherSidePlane = otherSidePlane;
+            this.bendX = bendX / 16;
+            this.bendY = bendY / 16;
+            this.bendZ = bendZ / 16;
+            this.basePlane = basePlane.scaled(1/16f);
+            this.otherSidePlane = otherSidePlane.scaled(1/16f);
         }
 
         private BendyMeshTransformer(BendableCuboid cuboid) {

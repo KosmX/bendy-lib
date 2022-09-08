@@ -76,7 +76,8 @@ public interface IBendable {
     Plane getOtherSidePlane();
 
     /**
-     * There are more efficient ways to calculate it
+     * Distance between the two opposite surface of the cuboid.
+     * Calculate two plane distance is inefficient.
      * Try to override it (If you have size)
      * @return the size of the cube
      */

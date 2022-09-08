@@ -37,7 +37,7 @@ public interface IBendable {
         Plane bendPlane = new Plane(directionUnit, new Vec3f(this.getBendX(), this.getBendY(), this.getBendZ()));
         float halfSize = bendHeight()/2;
 
-        boolean bl = getBendDirection() == Direction.UP || getBendDirection() == Direction.SOUTH || getBendDirection() == Direction.EAST;
+        boolean bl = isBendInverted();
 
         posSupplier.iteratePositions(iPosWithOrigin -> {
             Vec3f newPos = iPosWithOrigin.getOriginalPos();
@@ -61,6 +61,10 @@ public interface IBendable {
         });
 
         return transformMatrix;
+    }
+
+    default boolean isBendInverted() {
+        return getBendDirection() == Direction.UP || getBendDirection() == Direction.SOUTH || getBendDirection() == Direction.EAST;
     }
 
     Direction getBendDirection();

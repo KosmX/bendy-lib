@@ -29,7 +29,7 @@ public class TDSkinCompat {
                     private Bender(BendableCuboid cuboid) {
                         super(cuboid);
                         applyBend(bendableSource.getBendAxis(), bendableSource.getBend(), consumer -> transform = consumer);
-                        assert(transform != null);
+                        assert (transform != null);
                     }
 
                     /**
@@ -43,7 +43,7 @@ public class TDSkinCompat {
                             transform.accept(pos);
                             vector4fs[i] = new Vector4f(pos.getPos());
                         }
-                        vec3f.set(getDirection(vector4fs));
+                        vec3f.set(calculateNormal(vector4fs));
 
                     }
 
@@ -73,14 +73,14 @@ public class TDSkinCompat {
 
                 @Override
                 public void transform(ModelPart.Cuboid cuboid) {
-                    ((MutableCuboid)cuboid).getAndActivateMutator(null);
+                    ((MutableCuboid) cuboid).getAndActivateMutator(null);
                 }
             };
         });
     }
 
 
-    public static Vec3f getDirection(Vector4f[] vertices){
+    public static Vec3f calculateNormal(Vector4f[] vertices) {
         Vec3f buf = new Vec3f(vertices[3]);
         buf.scale(-1f);
         Vec3f vecB = new Vec3f(vertices[1]);
@@ -104,8 +104,8 @@ public class TDSkinCompat {
             this.bendX = bendX / 16;
             this.bendY = bendY / 16;
             this.bendZ = bendZ / 16;
-            this.basePlane = basePlane.scaled(1/16f);
-            this.otherSidePlane = otherSidePlane.scaled(1/16f);
+            this.basePlane = basePlane.scaled(1 / 16f);
+            this.otherSidePlane = otherSidePlane.scaled(1 / 16f);
         }
 
         private BendyMeshTransformer(BendableCuboid cuboid) {

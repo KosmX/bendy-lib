@@ -1,4 +1,4 @@
-package io.github.kosmx.bendylib.compat.tr7wz;
+package io.github.kosmx.bendylib.compat.tr7zw;
 
 import dev.tr7zw.skinlayers.api.MeshTransformer;
 import dev.tr7zw.skinlayers.api.SkinLayersAPI;
@@ -19,7 +19,9 @@ public class TDSkinCompat {
     public static void init() {
         SkinLayersAPI.setupMeshTransformerProvider(modelPart -> {
             var sourceCuboidOptional = ModelPartAccessor.optionalGetCuboid(modelPart, 0);
-            if (sourceCuboidOptional.isPresent() && sourceCuboidOptional.get().getActiveMutator() != null && sourceCuboidOptional.get().getActiveMutator().getRight() instanceof BendableCuboid bendableSource) {
+            if (sourceCuboidOptional.isPresent()
+                    && sourceCuboidOptional.get().getActiveMutator() != null
+                    && sourceCuboidOptional.get().getActiveMutator().getRight() instanceof BendableCuboid bendableSource) {
 
 
                 class Bender extends BendyMeshTransformer implements MeshTransformer {
@@ -54,7 +56,12 @@ public class TDSkinCompat {
 
                         if (cuboid instanceof MutableCuboid mutableCuboid) {
                             if (!mutableCuboid.hasMutator(mutator.getLeft())) {
-                                mutableCuboid.registerMutator(mutator.getLeft(), sourceCuboid.getCuboidBuilder(mutator.getLeft()));
+                                mutableCuboid.registerMutator(mutator.getLeft(),
+                                        data -> new BendableCuboid.Builder().setDirection(getBendDirection()).build(data,
+                                                (sides, positions, minX, minY, minZ, maxX, maxY, maxZ, fixX, fixY, fixZ,
+                                                 direction, basePlane, otherPlane, fullSize) ->
+                                                        new ModifiedBendableCuboid(sides, positions, minX, minY, minZ, maxX, maxY, maxZ, fixX, fixY, fixZ, direction,
+                                                                getBasePlane().scaled(16), getOtherSidePlane().scaled(16), bendHeight()*16)));
                             }
 
                             mutableCuboid.copyStateFrom(sourceCuboid);
@@ -92,6 +99,14 @@ public class TDSkinCompat {
         vecA.cross(vecB);
         //Return the cross product, if it's zero then return anything non-zero to not cause crash...
         return vecA.normalize() ? vecA : Direction.NORTH.getUnitVector();
+    }
+
+    private static class ModifiedBendableCuboid extends BendableCuboid {
+
+        protected ModifiedBendableCuboid(Quad[] sides, RememberingPos[] positions, float minX, float minY, float minZ, float maxX, float maxY, float maxZ, float fixX, float fixY, float fixZ, Direction direction, Plane basePlane, Plane otherPlane, float fullSize) {
+            super(sides, positions, minX, minY, minZ, maxX, maxY, maxZ, fixX, fixY, fixZ, direction, basePlane, otherPlane, fullSize);
+        }
+
     }
 
     private static class BendyMeshTransformer implements IBendable {

@@ -1,6 +1,5 @@
 architectury {
     //Enable it if we need ExpectPlatform
-    injectInjectables = false
     common(rootProject.enabled_platforms.split(","))
 }
 

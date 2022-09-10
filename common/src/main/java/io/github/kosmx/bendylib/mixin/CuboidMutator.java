@@ -9,12 +9,12 @@ import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Pair;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 
@@ -92,7 +92,7 @@ public class CuboidMutator implements MutableCuboid, CuboidSideAccessor {
         return mutators.containsKey(key) || mutatorBuilders.containsKey(key);
     }
 
-    @org.jetbrains.annotations.Nullable
+    @Nullable
     @Override
     public ICuboidBuilder<ICuboid> getCuboidBuilder(String key) {
         return mutatorBuilders.get(key);

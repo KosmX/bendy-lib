@@ -141,7 +141,7 @@ public class BendableCuboid implements ICuboid, IBendable, IterableRePos {
             return this;
         }
 
-        public BendableCuboid build(Data data){
+        public BendableCuboid build(Data data, BuildableBendable builder){
             ArrayList<Quad> planes = new ArrayList<>();
             HashMap<Vec3f, RememberingPos> positions = new HashMap<>();
             float minX = data.x, minY = data.y, minZ = data.z, maxX = data.x + data.sizeX, maxY = data.y + data.sizeY, maxZ = data.z + data.sizeZ;
@@ -185,8 +185,13 @@ public class BendableCuboid implements ICuboid, IBendable, IterableRePos {
             float bendX = ((float) data.sizeX + data.x + data.x)/2;
             float bendY = ((float) data.sizeY + data.y + data.y)/2;
             float bendZ = ((float) data.sizeZ + data.z + data.z)/2;
-            return new BendableCuboid(planes.toArray(new Quad[0]), positions.values().toArray(new RememberingPos[0]), minX, minY, minZ, maxX, maxY, maxZ, bendX, bendY, bendZ, direction, bl ? aPlane : bPlane, bl ? bPlane : aPlane, fullSize);
+            return builder.build(planes.toArray(new Quad[0]), positions.values().toArray(new RememberingPos[0]), minX, minY, minZ, maxX, maxY, maxZ, bendX, bendY, bendZ, direction, bl ? aPlane : bPlane, bl ? bPlane : aPlane, fullSize);
         }
+
+        public BendableCuboid build(Data data) {
+            return build(data, BendableCuboid::new);
+        }
+
         //edge[2] can be calculated from edge 0, 1, 3...
         private void createAndAddQuads(Collection<Quad> quads, HashMap<Vec3f, RememberingPos> positions, Vec3f[] edges, int u1, int v1, int u2, int v2, float squishU, float squishV, boolean flip, Data data){
             int du = u2 < u1 ? 1 : -1;
@@ -222,6 +227,11 @@ public class BendableCuboid implements ICuboid, IBendable, IterableRePos {
             return positions.get(pos);
         }
 
+    }
+
+    @FunctionalInterface
+    public interface BuildableBendable {
+        BendableCuboid build(Quad[] sides, RememberingPos[] positions, float minX, float minY, float minZ, float maxX, float maxY, float maxZ, float fixX, float fixY, float fixZ, Direction direction, Plane basePlane, Plane otherPlane, float fullSize);
     }
 
     /**

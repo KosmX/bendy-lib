@@ -48,11 +48,6 @@ public class TDSkinCompat {
                     }
 
                     @Override
-                    public boolean isBendInverted() {
-                        return false;
-                    }
-
-                    @Override
                     public void transform(ModelPart.Cuboid cuboid) {
                         var sourceCuboid = sourceCuboidOptional.get();
                         var mutator = sourceCuboidOptional.get().getActiveMutator();
@@ -113,7 +108,7 @@ public class TDSkinCompat {
             this.bendZ = bendZ / 16;
             this.basePlane = basePlane.scaled(1 / 16f);
             this.otherSidePlane = otherSidePlane.scaled(1 / 16f);
-            this.bendHeight = bendHeight;
+            this.bendHeight = bendHeight / 16;
         }
 
         private BendyMeshTransformer(BendableCuboid cuboid) {

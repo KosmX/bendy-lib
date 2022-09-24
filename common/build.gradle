@@ -1,6 +1,5 @@
 architectury {
     //Enable it if we need ExpectPlatform
-    injectInjectables = false
     common(rootProject.enabled_platforms.split(","))
 }
 
@@ -12,6 +11,8 @@ dependencies {
     // We depend on fabric loader here to use the fabric @Environment annotations and get the mixin dependencies
     // Do NOT use other classes from fabric loader
     modImplementation "net.fabricmc:fabric-loader:${rootProject.loader_version}"
+
+    modImplementation("maven.modrinth:3dskinlayers:1.5.2-fabric-1.19")
 }
 
 publishing {

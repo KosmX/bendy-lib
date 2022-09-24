@@ -29,6 +29,16 @@ public interface MutableCuboid {
     Pair<String, ICuboid> getActiveMutator();
 
     /**
+     * Check if mutator with key exists
+     * @param key key
+     * @return is the mutator registered (even if not active)
+     */
+    boolean hasMutator(String key);
+
+    @Nullable
+    ICuboidBuilder<ICuboid> getCuboidBuilder(String key);
+
+    /**
      * Get a mutator
      * @param name mutator identifier
      * @return null, if no mutator exists or created

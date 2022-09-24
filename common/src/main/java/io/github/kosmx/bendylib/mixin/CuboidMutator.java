@@ -9,15 +9,12 @@ import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Pair;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
-import org.spongepowered.asm.mixin.Shadow;
+import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 
@@ -31,18 +28,29 @@ public class CuboidMutator implements MutableCuboid, CuboidSideAccessor {
     @Mutable
     @Shadow @Final private ModelPart.Quad[] sides;
     //Store the mutators and the mutator builders.
-    HashMap<String, ICuboid> mutators = new HashMap<>();
-    HashMap<String, ICuboidBuilder> mutatorBuilders = new HashMap<>();
 
+    @Unique
+    private HashMap<String, ICuboid> mutators = new HashMap<>();
+
+    @Unique
+    private HashMap<String, ICuboidBuilder> mutatorBuilders = new HashMap<>();
+
+    @Unique
     private ModelPart.Quad[] originalQuads;
+
+    @Unique
     private boolean isSidesSwapped = false;
 
-    ICuboidBuilder.Data partData;
+    @Unique
+    private ICuboidBuilder.Data partData;
 
     @Nullable
-    ICuboid activeMutator;
+    @Unique
+    private ICuboid activeMutator;
+
     @Nullable
-    String activeMutatorID;
+    @Unique
+    private String activeMutatorID;
 
     @Inject(method = "<init>", at = @At(value = "RETURN"))
     private void constructor(int u, int v, float x, float y, float z, float sizeX, float sizeY, float sizeZ, float extraX, float extraY, float extraZ, boolean mirror, float textureWidth, float textureHeight, CallbackInfo ci){
@@ -77,6 +85,17 @@ public class CuboidMutator implements MutableCuboid, CuboidSideAccessor {
     @Override
     public Pair<String, ICuboid> getActiveMutator() {
         return activeMutator == null ? null : new Pair<>(activeMutatorID, activeMutator);
+    }
+
+    @Override
+    public boolean hasMutator(String key) {
+        return mutators.containsKey(key) || mutatorBuilders.containsKey(key);
+    }
+
+    @Nullable
+    @Override
+    public ICuboidBuilder<ICuboid> getCuboidBuilder(String key) {
+        return mutatorBuilders.get(key);
     }
 
     @Nullable

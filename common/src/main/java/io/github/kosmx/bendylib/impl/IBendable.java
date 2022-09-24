@@ -37,7 +37,7 @@ public interface IBendable {
         Plane bendPlane = new Plane(directionUnit, new Vec3f(this.getBendX(), this.getBendY(), this.getBendZ()));
         float halfSize = bendHeight()/2;
 
-        boolean bl = getBendDirection() == Direction.UP || getBendDirection() == Direction.SOUTH || getBendDirection() == Direction.EAST;
+        boolean bl = isBendInverted();
 
         posSupplier.iteratePositions(iPosWithOrigin -> {
             Vec3f newPos = iPosWithOrigin.getOriginalPos();
@@ -63,6 +63,10 @@ public interface IBendable {
         return transformMatrix;
     }
 
+    default boolean isBendInverted() {
+        return getBendDirection() == Direction.UP || getBendDirection() == Direction.SOUTH || getBendDirection() == Direction.EAST;
+    }
+
     Direction getBendDirection();
 
     /**
@@ -76,7 +80,8 @@ public interface IBendable {
     Plane getOtherSidePlane();
 
     /**
-     * There are more efficient ways to calculate it
+     * Distance between the two opposite surface of the cuboid.
+     * Calculate two plane distance is inefficient.
      * Try to override it (If you have size)
      * @return the size of the cube
      */
@@ -89,14 +94,23 @@ public interface IBendable {
      * form a vector and a position
      * for distance calculation
      */
-    class Plane{
-        final Vec3f normal;
-        final float normDistance;
+    final class Plane{
+        public final Vec3f normal;
+        private final float normDistance;
 
         public Plane(Vec3f normal, Vec3f position){
-            this.normal = normal.copy();
+            this.normal = normal;
             this.normal.normalize();
-            this.normDistance = -normal.dot(position);
+            this.normDistance = -this.normal.dot(position);
+        }
+
+        private Plane(Vec3f normal, float normDistance) {
+            this.normal = normal;
+            this.normDistance = normDistance;
+        }
+
+        public Plane scaled(float scalar) {
+            return new Plane(this.normal.copy(), normDistance * scalar);
         }
 
         /**

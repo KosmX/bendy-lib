@@ -19,6 +19,11 @@ configurations {
     developmentFabric.extendsFrom common
 }
 
+repositories {
+    maven { url "https://maven.terraformersmc.com/releases/" }
+    maven { url "https://maven.kosmx.dev/" }
+}
+
 
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:${rootProject.loader_version}"
@@ -27,6 +32,15 @@ dependencies {
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
+
+    modRuntimeOnly "com.terraformersmc:modmenu:4.0.6"
+    modRuntimeOnly "maven.modrinth:skinswapper:3.12"
+
+    modImplementation("maven.modrinth:3dskinlayers:1.5.2-fabric-1.19")
+
+    modRuntimeOnly "net.fabricmc.fabric-api:fabric-api:0.58.5+1.19.1"
+    modRuntimeOnly "dev.kosmx.player-anim:player-animation-lib-fabric:0.4.0-test1"
+    modRuntimeOnly "maven.modrinth:emotecraft:2.2.5-MC1.19.2-fabric"
 }
 
 processResources {
@@ -46,7 +60,7 @@ shadowJar {
 
 remapJar {
     injectAccessWidener = true
-    input.set shadowJar.archiveFile
+    inputFile.set shadowJar.archiveFile
     dependsOn shadowJar
     classifier null
 }

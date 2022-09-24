@@ -12,7 +12,7 @@ dependencies {
     // Do NOT use other classes from fabric loader
     modImplementation "net.fabricmc:fabric-loader:${rootProject.loader_version}"
 
-    modImplementation files("../3dskinlayers-fabric-1.5.1-mc1.19.1.jar")
+    modImplementation("maven.modrinth:3dskinlayers:1.5.2-fabric-1.19")
 }
 
 publishing {

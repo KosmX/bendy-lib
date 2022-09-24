@@ -21,13 +21,6 @@ configurations {
 
 repositories {
     maven { url "https://maven.terraformersmc.com/releases/" }
-    maven {
-        name = "Modrinth"
-        url = "https://api.modrinth.com/maven"
-        content {
-            includeGroup "maven.modrinth"
-        }
-    }
     maven { url "https://maven.kosmx.dev/" }
 }
 
@@ -43,7 +36,7 @@ dependencies {
     modRuntimeOnly "com.terraformersmc:modmenu:4.0.6"
     modRuntimeOnly "maven.modrinth:skinswapper:3.12"
 
-    modImplementation files("../3dskinlayers-fabric-1.5.1-mc1.19.1.jar")
+    modImplementation("maven.modrinth:3dskinlayers:1.5.2-fabric-1.19")
 
     modRuntimeOnly "net.fabricmc.fabric-api:fabric-api:0.58.5+1.19.1"
     modRuntimeOnly "dev.kosmx.player-anim:player-animation-lib-fabric:0.4.0-test1"
@@ -67,7 +60,7 @@ shadowJar {
 
 remapJar {
     injectAccessWidener = true
-    input.set shadowJar.archiveFile
+    inputFile.set shadowJar.archiveFile
     dependsOn shadowJar
     classifier null
 }

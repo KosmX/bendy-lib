@@ -12,11 +12,14 @@ import net.minecraft.client.model.ModelPart;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.math.Vector4f;
+import org.slf4j.Logger;
 
 import java.util.function.Consumer;
 
 public class TDSkinCompat {
-    public static void init() {
+    public static void init(Logger logger) throws ClassNotFoundException, NoClassDefFoundError {
+        logger.info("Initializing 3D Skin Layers compatibility");
+
         SkinLayersAPI.setupMeshTransformerProvider(modelPart -> {
             var sourceCuboidOptional = ModelPartAccessor.optionalGetCuboid(modelPart, 0);
             if (sourceCuboidOptional.isPresent()

@@ -6,9 +6,13 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.loading.FMLLoader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Mod("bendylib")
 public class ForgeModInterface {
+
+    public static Logger LOGGER = LoggerFactory.getLogger("bendy-lib");
     public ForgeModInterface() {
         if (!FMLLoader.getDist().isClient()) {
             System.out.println("[bendy-lib] You're loading a client-only mod on server-side");
@@ -23,7 +27,11 @@ public class ForgeModInterface {
         public static void onClientSetup(FMLClientSetupEvent event)
         {
             if (PlatformUtils.isSkinLayersPresent()) {
-                TDSkinCompat.init();
+                try {
+                    TDSkinCompat.init(LOGGER);
+                } catch(NoClassDefFoundError|ClassNotFoundException e) {
+                    LOGGER.error("Failed to initialize 3D Skin Layers compatibility");
+                }
             }
         }
     }

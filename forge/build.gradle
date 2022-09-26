@@ -33,7 +33,7 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 
-    modRuntimeOnly("maven.modrinth:3dskinlayers:1.5.2-forge-1.19")
+    modCompileOnly modLocalRuntime("maven.modrinth:3dskinlayers:1.5.2-forge-1.19")
 }
 
 processResources {
@@ -79,12 +79,6 @@ publishing {
         mavenForge(MavenPublication) {
             artifactId = rootProject.archives_base_name + "-" + project.name
             from components.java
-
-            pom.withXml {
-                asNode().dependencies.dependency.each { dep ->
-                    assert dep.parent().remove(dep)
-                }
-            }
         }
     }
 

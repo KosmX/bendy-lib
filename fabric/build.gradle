@@ -33,14 +33,14 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
 
-    modRuntimeOnly "com.terraformersmc:modmenu:4.0.6"
-    modRuntimeOnly "maven.modrinth:skinswapper:3.12"
+    modLocalRuntime "com.terraformersmc:modmenu:4.0.6"
+    modLocalRuntime "maven.modrinth:skinswapper:3.12"
 
-    modImplementation("maven.modrinth:3dskinlayers:1.5.2-fabric-1.19")
+    modCompileOnly modLocalRuntime("maven.modrinth:3dskinlayers:1.5.2-fabric-1.19")
 
-    modRuntimeOnly "net.fabricmc.fabric-api:fabric-api:0.58.5+1.19.1"
-    modRuntimeOnly "dev.kosmx.player-anim:player-animation-lib-fabric:0.4.0-test1"
-    modRuntimeOnly "maven.modrinth:emotecraft:2.2.5-MC1.19.2-fabric"
+    modLocalRuntime "net.fabricmc.fabric-api:fabric-api:0.58.5+1.19.1"
+    modLocalRuntime "dev.kosmx.player-anim:player-animation-lib-fabric:0.4.0-test1"
+    modLocalRuntime "maven.modrinth:emotecraft:2.2.5-MC1.19.2-fabric"
 }
 
 processResources {
@@ -86,14 +86,6 @@ publishing {
         mavenFabric(MavenPublication) {
             artifactId = rootProject.archives_base_name + "-" + project.name
             from components.java
-
-            pom.withXml {
-                asNode().dependencies.dependency.each { dep ->
-                    if(!(dep.artifactId.last().value().last() in ["fabric-loader"])) {
-                        assert dep.parent().remove(dep)
-                    }
-                }
-            }
         }
     }
 

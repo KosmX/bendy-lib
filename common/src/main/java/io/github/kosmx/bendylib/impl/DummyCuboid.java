@@ -4,8 +4,7 @@ import io.github.kosmx.bendylib.ICuboidBuilder;
 import io.github.kosmx.bendylib.MutableCuboid;
 import net.minecraft.util.Pair;
 import org.jetbrains.annotations.ApiStatus;
-
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 @Deprecated
 @ApiStatus.Experimental

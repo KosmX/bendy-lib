@@ -1,25 +1,25 @@
 package io.github.kosmx.bendylib.impl;
 
-import net.minecraft.client.model.ModelPart;
-import net.minecraft.util.math.Vec3f;
+
+import org.joml.Vector3f;
 
 public class Vertex implements IVertex{
 
-    protected final Vec3f pos;
+    protected final Vector3f pos;
     public final float u;
     public final float v;
 
     public Vertex(float x, float y, float z, float u, float v){
-        this(new Vec3f(x, y, z), u, v);
+        this(new Vector3f(x, y, z), u, v);
     }
-    public Vertex(Vec3f pos, float u, float v){
+    public Vertex(Vector3f pos, float u, float v){
         this.pos = pos;
         this.u = u;
         this.v = v;
     }
 
     @Override
-    public Vec3f getPos() {
+    public Vector3f getPos() {
         return this.pos;
     }
 

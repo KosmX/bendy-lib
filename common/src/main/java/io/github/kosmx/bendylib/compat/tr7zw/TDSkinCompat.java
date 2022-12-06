@@ -10,8 +10,8 @@ import io.github.kosmx.bendylib.impl.IPosWithOrigin;
 import io.github.kosmx.bendylib.impl.RememberingPos;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3f;
-import net.minecraft.util.math.Vector4f;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 import org.slf4j.Logger;
 
 import java.util.function.Consumer;
@@ -42,9 +42,9 @@ public class TDSkinCompat {
                      * @param vector4fs quad vertices
                      */
                     @Override
-                    public void transform(Vec3f vec3f, Vector4f[] vector4fs) {
+                    public void transform(Vector3f vec3f, Vector4f[] vector4fs) {
                         for (int i = 0; i < vector4fs.length; i++) {
-                            var pos = new RememberingPos(new Vec3f(vector4fs[i]));
+                            var pos = new RememberingPos(new Vector3f(vector4fs[i]));
                             transform.accept(pos);
                             vector4fs[i] = new Vector4f(pos.getPos());
                         }
@@ -77,7 +77,7 @@ public class TDSkinCompat {
             }
             return new MeshTransformer() {
                 @Override
-                public void transform(Vec3f vec3f, Vector4f[] vector4fs) {
+                public void transform(Vector3f vec3f, Vector4f[] vector4fs) {
                     //empty
                 }
 
@@ -90,14 +90,14 @@ public class TDSkinCompat {
     }
 
 
-    public static Vec3f calculateNormal(Vector4f[] vertices) {
-        Vec3f buf = new Vec3f(vertices[3]);
+    public static Vector3f calculateNormal(Vector4f[] vertices) {
+        Vector3f buf = new Vector3f(vertices[3]);
         buf.scale(-1f);
-        Vec3f vecB = new Vec3f(vertices[1]);
+        Vector3f vecB = new Vector3f(vertices[1]);
         vecB.add(buf);
-        buf = new Vec3f(vertices[2]);
+        buf = new Vector3f(vertices[2]);
         buf.scale(-1);
-        Vec3f vecA = new Vec3f(vertices[0]);
+        Vector3f vecA = new Vector3f(vertices[0]);
         vecA.add(buf);
         vecA.cross(vecB);
         //Return the cross product, if it's zero then return anything non-zero to not cause crash...

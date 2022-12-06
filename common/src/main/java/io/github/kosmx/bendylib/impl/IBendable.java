@@ -1,6 +1,9 @@
 package io.github.kosmx.bendylib.impl;
 
 import net.minecraft.util.math.*;
+import org.joml.*;
+
+import java.lang.Math;
 
 /**
  * Bending methods.
@@ -16,17 +19,17 @@ public interface IBendable {
      * @return the used transformation matrix
      */
     default Matrix4f applyBend(float bendAxis, float bendValue, IterableRePos posSupplier){
-        Vec3f axis = new Vec3f((float) Math.cos(bendAxis), 0, (float) Math.sin(bendAxis));
-        Matrix3f matrix3f = new Matrix3f(getBendDirection().getRotationQuaternion());
-        axis.transform(matrix3f);
+        Vector3f axis = new Vector3f((float) Math.cos(bendAxis), 0, (float) Math.sin(bendAxis));
+        Matrix3f matrix3f = new Matrix3f().set(getBendDirection().getRotationQuaternion());
+        axis.mul(matrix3f);
         Matrix4f transformMatrix = new Matrix4f();
-        transformMatrix.loadIdentity();
 
-        transformMatrix.multiply(Matrix4f.translate(getBendX(), getBendY(), getBendZ()));
-        transformMatrix.multiply(axis.getRadialQuaternion(bendValue));
-        transformMatrix.multiply(Matrix4f.translate(-getBendX(), -getBendY(), -getBendZ()));
+        transformMatrix.translate(getBendX(), getBendY(), getBendZ());
+        //transformMatrix.mul(axis.getRadialQuaternion(bendValue));
+        transformMatrix.rotate(bendValue, axis);
+        transformMatrix.translate(-getBendX(), -getBendY(), -getBendZ());
 
-        Vec3f directionUnit; //some temporarily variable;
+        Vector3f directionUnit; //some temporarily variable;
 
         Plane basePlane = getBasePlane();
         Plane otherPlane = getOtherSidePlane();
@@ -34,27 +37,27 @@ public interface IBendable {
         directionUnit = this.getBendDirection().getUnitVector();
         directionUnit.cross(axis);
         //parallel to the bend's axis and to the cube's bend direction
-        Plane bendPlane = new Plane(directionUnit, new Vec3f(this.getBendX(), this.getBendY(), this.getBendZ()));
+        Plane bendPlane = new Plane(directionUnit, new Vector3f(this.getBendX(), this.getBendY(), this.getBendZ()));
         float halfSize = bendHeight()/2;
 
         boolean bl = isBendInverted();
 
         posSupplier.iteratePositions(iPosWithOrigin -> {
-            Vec3f newPos = iPosWithOrigin.getOriginalPos();
+            Vector3f newPos = iPosWithOrigin.getOriginalPos();
             float distFromBend = bl ? -bendPlane.distanceTo(newPos) : bendPlane.distanceTo(newPos);
             float distFromBase = basePlane.distanceTo(newPos);
             float distFromOther = otherPlane.distanceTo(newPos);
             double s = Math.tan(bendValue/2)*distFromBend;
-            Vec3f x = getBendDirection().getUnitVector();
+            Vector3f x = getBendDirection().getUnitVector();
             if(Math.abs(distFromBase) < Math.abs(distFromOther)){
-                x.scale((float) (-distFromBase/halfSize*s));
+                x.mul((float) (-distFromBase/halfSize*s));
                 newPos.add(x);
-                Vector4f reposVector = new Vector4f(newPos);
-                reposVector.transform(transformMatrix);
-                newPos = new Vec3f(reposVector.getX(), reposVector.getY(), reposVector.getZ());
+                Vector4f reposVector = new Vector4f(newPos, 1f);
+                reposVector.mul(transformMatrix);
+                newPos = new Vector3f(reposVector.x, reposVector.y, reposVector.z);
             }
             else {
-                x.scale((float) (-distFromOther/halfSize*s));
+                x.mul((float) (-distFromOther/halfSize*s));
                 newPos.add(x);
             }
             iPosWithOrigin.setPos(newPos);
@@ -95,22 +98,22 @@ public interface IBendable {
      * for distance calculation
      */
     final class Plane{
-        public final Vec3f normal;
+        public final Vector3f normal;
         private final float normDistance;
 
-        public Plane(Vec3f normal, Vec3f position){
+        public Plane(Vector3f normal, Vector3f position){
             this.normal = normal;
             this.normal.normalize();
             this.normDistance = -this.normal.dot(position);
         }
 
-        private Plane(Vec3f normal, float normDistance) {
+        private Plane(Vector3f normal, float normDistance) {
             this.normal = normal;
             this.normDistance = normDistance;
         }
 
         public Plane scaled(float scalar) {
-            return new Plane(this.normal.copy(), normDistance * scalar);
+            return new Plane(new Vector3f(normal), normDistance * scalar);
         }
 
         /**
@@ -118,7 +121,7 @@ public interface IBendable {
          * @param pos some pos
          * @return the distance between the pos and this plane
          */
-        public float distanceTo(Vec3f pos){
+        public float distanceTo(Vector3f pos){
             return normal.dot(pos) + normDistance;
         }
 
@@ -128,7 +131,7 @@ public interface IBendable {
          * @return the distance between the two planes. 0 if not parallel
          */
         public float distanceTo(Plane otherPlane){
-            Vec3f tmp = this.normal.copy();
+            Vector3f tmp = new Vector3f(this.normal);
             tmp.cross(otherPlane.normal);
             //if the lines are parallel
             if(tmp.dot(tmp) < 0.01){

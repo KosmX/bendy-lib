@@ -2,7 +2,7 @@ package io.github.kosmx.bendylib;
 
 import io.github.kosmx.bendylib.impl.ICuboid;
 import net.minecraft.util.Pair;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public interface MutableCuboid {
 

@@ -6,13 +6,14 @@ import it.unimi.dsi.fastutil.objects.ObjectList;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.util.math.MatrixStack;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.List;
 import java.util.Map;
 
 /**
  * ModelPart to support ICuboids
- *
+ * <p>
  * If you want to mutate existing Cuboids, see {@link ModelPartAccessor} and {@link MutableCuboid}
  *
  * This can be used with {@link ICuboid}.

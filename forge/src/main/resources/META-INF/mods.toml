@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[36,)"
+loaderVersion = "[44,)"
 #issueTrackerURL = ""
 license = "Insert License Here"
 
@@ -17,13 +17,13 @@ But you should use Fabric or Quilt
 [[dependencies.bendylib]]
 modId = "forge"
 mandatory = true
-versionRange = "[36,)"
+versionRange = "[44,)"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.bendylib]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.16,)"
+versionRange = "[1.19.3,)"
 ordering = "NONE"
 side = "CLIENT"

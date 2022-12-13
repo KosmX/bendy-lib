@@ -12,13 +12,13 @@ dependencies {
     // Do NOT use other classes from fabric loader
     modImplementation "net.fabricmc:fabric-loader:${rootProject.loader_version}"
 
-    //modCompileOnly("maven.modrinth:3dskinlayers:1.5.2-fabric-1.19") //TODO
+    modCompileOnly("maven.modrinth:3dskinlayers:1.5.2-1.19.3-fabric") //TODO
 }
 
 sourceSets {
     main {
         java {
-            exclude "io/github/kosmx/bendylib/compat/tr7zw"
+            //exclude "io/github/kosmx/bendylib/compat/tr7zw"
         }
     }
 }

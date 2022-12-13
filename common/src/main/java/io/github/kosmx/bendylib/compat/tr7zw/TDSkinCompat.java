@@ -44,9 +44,9 @@ public class TDSkinCompat {
                     @Override
                     public void transform(Vector3f vec3f, Vector4f[] vector4fs) {
                         for (int i = 0; i < vector4fs.length; i++) {
-                            var pos = new RememberingPos(new Vector3f(vector4fs[i]));
+                            var pos = new RememberingPos(new Vector3f(vector4fs[i].x, vector4fs[i].y, vector4fs[i].z));
                             transform.accept(pos);
-                            vector4fs[i] = new Vector4f(pos.getPos());
+                            vector4fs[i] = new Vector4f(pos.getPos(), 1);
                         }
                         vec3f.set(calculateNormal(vector4fs));
 
@@ -91,17 +91,17 @@ public class TDSkinCompat {
 
 
     public static Vector3f calculateNormal(Vector4f[] vertices) {
-        Vector3f buf = new Vector3f(vertices[3]);
-        buf.scale(-1f);
-        Vector3f vecB = new Vector3f(vertices[1]);
+        Vector3f buf = new Vector3f(vertices[3].x, vertices[3].y, vertices[3].z);
+        buf.negate();
+        Vector3f vecB = new Vector3f(vertices[1].x, vertices[1].y, vertices[1].z);
         vecB.add(buf);
-        buf = new Vector3f(vertices[2]);
-        buf.scale(-1);
-        Vector3f vecA = new Vector3f(vertices[0]);
+        buf = new Vector3f(vertices[2].x, vertices[2].y, vertices[2].z);
+        buf.negate();
+        Vector3f vecA = new Vector3f(vertices[0].x, vertices[0].y, vertices[0].z);
         vecA.add(buf);
         vecA.cross(vecB);
         //Return the cross product, if it's zero then return anything non-zero to not cause crash...
-        return vecA.normalize() ? vecA : Direction.NORTH.getUnitVector();
+        return vecA.normalize().isFinite() ? vecA : Direction.NORTH.getUnitVector();
     }
 
     private static class ModifiedBendableCuboid extends BendableCuboid {

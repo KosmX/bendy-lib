@@ -17,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 @SuppressWarnings({"rawtypes", "unused"})
 @Mixin(ModelPart.Cuboid.class)
@@ -53,7 +54,7 @@ public class CuboidMutator implements MutableCuboid, CuboidSideAccessor {
     private String activeMutatorID;
 
     @Inject(method = "<init>", at = @At(value = "RETURN"))
-    private void constructor(int u, int v, float x, float y, float z, float sizeX, float sizeY, float sizeZ, float extraX, float extraY, float extraZ, boolean mirror, float textureWidth, float textureHeight, CallbackInfo ci){
+    private void constructor(int u, int v, float x, float y, float z, float sizeX, float sizeY, float sizeZ, float extraX, float extraY, float extraZ, boolean mirror, float textureWidth, float textureHeight, Set set, CallbackInfo ci){
         partData = new ICuboidBuilder.Data(u, v, minX, minY, minZ, sizeX, sizeY, sizeZ, extraX, extraY, extraZ, mirror, textureWidth, textureHeight);
         originalQuads = this.sides;
     }

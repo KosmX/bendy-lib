@@ -25,7 +25,7 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive = false }
 
-    modCompileOnly modLocalRuntime("maven.modrinth:3dskinlayers:1.5.2-1.19.3-forge")
+    //modCompileOnly modLocalRuntime("maven.modrinth:3dskinlayers:1.5.2-1.19.3-forge")
 }
 
 processResources {

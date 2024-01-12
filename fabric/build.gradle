@@ -1,5 +1,5 @@
 plugins {
-    id "com.github.johnrengelman.shadow" version "7.1.2"
+    id "com.github.johnrengelman.shadow"
 }
 
 architectury {
@@ -27,20 +27,20 @@ repositories {
 
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:${rootProject.loader_version}"
-    //modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_version}"
 
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
 
-    modLocalRuntime "com.terraformersmc:modmenu:4.0.6"
-    modLocalRuntime "maven.modrinth:skinswapper:3.12"
+    modLocalRuntime "com.terraformersmc:modmenu:9.0.0"
+    // modLocalRuntime "maven.modrinth:skinswapper:3.12"
 
     modCompileOnly modLocalRuntime("maven.modrinth:3dskinlayers:1.5.2-1.19.3-fabric")
 
-    modLocalRuntime "net.fabricmc.fabric-api:fabric-api:0.58.5+1.19.1"
-    modLocalRuntime "dev.kosmx.player-anim:player-animation-lib-fabric:0.4.0-test1"
-    modLocalRuntime "maven.modrinth:emotecraft:2.2.5-MC1.19.2-fabric"
+    //modLocalRuntime "net.fabricmc.fabric-api:fabric-api:0.58.5+1.19.1"
+   // modLocalRuntime "dev.kosmx.player-anim:player-animation-lib-fabric:0.4.0-test1"
+    //modLocalRuntime "maven.modrinth:emotecraft:2.2.5-MC1.19.2-fabric"
 }
 
 processResources {

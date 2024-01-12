@@ -15,6 +15,9 @@ But you should use Fabric or Quilt
 '''
 #logoFile = ""
 
+[[mixins]]
+config = "bendylib.mixins.json"
+
 [[dependencies.bendylib]]
 modId = "minecraft"
 type = "required"

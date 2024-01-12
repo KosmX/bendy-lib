@@ -1,11 +1,12 @@
 modLoader = "javafml"
-loaderVersion = "[45,)"
+loaderVersion = "*"
 #issueTrackerURL = ""
-license = "Insert License Here"
+license = "CC-BY-4.0"
 
 [[mods]]
 modId = "bendylib"
 version = "${version}"
+displayURL = "https://github.com/KosmX/bendy-lib"
 displayName = "Bendy lib"
 authors = "KosmX"
 description = '''
@@ -15,15 +16,8 @@ But you should use Fabric or Quilt
 #logoFile = ""
 
 [[dependencies.bendylib]]
-modId = "forge"
-mandatory = true
-versionRange = "[45,)"
-ordering = "NONE"
-side = "CLIENT"
-
-[[dependencies.bendylib]]
 modId = "minecraft"
-mandatory = true
-versionRange = "[1.19.4,)"
+type = "required"
+versionRange = "[1.20.4,)"
 ordering = "NONE"
 side = "CLIENT"

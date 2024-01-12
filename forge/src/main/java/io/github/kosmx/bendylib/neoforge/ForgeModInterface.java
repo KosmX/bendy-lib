@@ -1,4 +1,4 @@
-package io.github.kosmx.bendylib.forge;
+package io.github.kosmx.bendylib.neoforge;
 
 import io.github.kosmx.bendylib.PlatformUtils;
 import io.github.kosmx.bendylib.compat.tr7zw.TDSkinCompat;

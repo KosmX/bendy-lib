@@ -1,4 +1,4 @@
-package io.github.kosmx.bendylib.forge;
+package io.github.kosmx.bendylib.neoforge;
 
 import net.neoforged.fml.ModList;
 

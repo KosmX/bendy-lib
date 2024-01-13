@@ -1,8 +1,8 @@
 package io.github.kosmx.bendylib.fabric;
 
-import io.github.kosmx.bendylib.PlatformUtils;
 import io.github.kosmx.bendylib.compat.tr7zw.TDSkinCompat;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,9 +11,11 @@ public class Init implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        if (PlatformUtils.isSkinLayersPresent()) {
+        if (FabricLoader.getInstance().isModLoaded("skinlayers")) {
+            LOGGER.info("Initializing 3D Skin Layers compatibility");
+
             try {
-                TDSkinCompat.init(LOGGER);
+                TDSkinCompat.init();
             } catch(NoClassDefFoundError|ClassNotFoundException e) {
                 LOGGER.error("Failed to initialize 3D Skin Layers compatibility");
             }

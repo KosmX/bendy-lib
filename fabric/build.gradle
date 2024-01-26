@@ -27,7 +27,6 @@ repositories {
 
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:${rootProject.loader_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_version}"
 
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
@@ -38,7 +37,7 @@ dependencies {
 
     modCompileOnly modLocalRuntime("maven.modrinth:3dskinlayers:1.5.2-1.19.3-fabric")
 
-    //modLocalRuntime "net.fabricmc.fabric-api:fabric-api:0.58.5+1.19.1"
+    //modLocalRuntime "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_version}"
    // modLocalRuntime "dev.kosmx.player-anim:player-animation-lib-fabric:0.4.0-test1"
     //modLocalRuntime "maven.modrinth:emotecraft:2.2.5-MC1.19.2-fabric"
 }

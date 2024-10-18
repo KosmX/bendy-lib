@@ -1,8 +1,9 @@
 package io.github.kosmx.bendylib.impl;
 
-import net.minecraft.client.util.math.Vector3f;
 
 import java.util.Objects;
+
+import net.minecraft.client.util.math.Vector3f;
 
 public class RememberingPos implements IPosWithOrigin{
     final Vector3f originPos;

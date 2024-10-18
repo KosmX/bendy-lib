@@ -1,5 +1,6 @@
 package io.github.kosmx.bendylib.impl;
 
+import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.util.math.Vector3f;
 
 public class Vertex implements IVertex{

@@ -2,9 +2,7 @@ package io.github.kosmx.bendylib.impl;
 
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.client.util.math.Vector4f;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Matrix3f;
-import net.minecraft.util.math.Matrix4f;
+import net.minecraft.util.math.*;
 
 /**
  * Bending methods.

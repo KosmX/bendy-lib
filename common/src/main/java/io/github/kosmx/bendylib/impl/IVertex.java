@@ -1,5 +1,6 @@
 package io.github.kosmx.bendylib.impl;
 
+import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.util.math.Vector3f;
 
 /**
@@ -33,5 +34,9 @@ public interface IVertex {
      * @return The remapped IVertex
      */
     IVertex remap(float u, float v);
+
+    default ModelPart.Vertex toMojVertex(){
+        return new ModelPart.Vertex(this.getPos(), getU(), getV());
+    }
 
 }

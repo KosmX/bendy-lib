@@ -7,6 +7,7 @@ import java.util.function.Consumer;
  * for {@link IBendable}
  * transform method doesn't create a new matrix for every position
  */
+@FunctionalInterface
 public interface IterableRePos {
 
     /**
